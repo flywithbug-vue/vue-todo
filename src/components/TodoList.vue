@@ -9,7 +9,7 @@
          :key="todo.id"
          class="todo-item">
       <div class="todo-item-left">
-        <input type="checkbox" v-model="todo.complete">
+        <input type="checkbox" v-model="todo.completed">
         <div class="todo-item-label" v-if="!todo.editing"
               @dblclick="editTodo(todo)"
               :class="{ completed : todo.completed}">
@@ -28,7 +28,7 @@
       </div>
     </div>
     <div class="extra-container">
-      <div><label><input type="checkbox" :aria-checked="!anyRemaining" @change="checkAllTodos">Check All</label></div>
+      <div><label><input type="checkbox" :checked="!anyRemaining">Check All</label></div>
       <div>{{ remaining }} items left</div>
     </div>
   </div>
@@ -72,12 +72,12 @@
           };
         },
     computed: {
-      // remaining() {
-      //   return this.todos.filter(todo => !todo.complete)
-      // },
-      // anyRemaining() {
-      //   return this.
-      // }
+      remaining() {
+        return this.todos.filter(todo => !todo.completed).length
+      },
+      anyRemaining() {
+        return this.remaining != 0
+      }
     },
     methods: {
       addTodo() {
