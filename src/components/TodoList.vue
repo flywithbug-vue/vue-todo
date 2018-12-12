@@ -28,7 +28,9 @@
       </div>
     </div>
     <div class="extra-container">
-      <div><label><input type="checkbox" :checked="!anyRemaining">Check All</label></div>
+      <div><label><input type="checkbox"
+                         :checked="!anyRemaining"
+                         @change="checkAllTodos">Check All</label></div>
       <div>{{ remaining }} items left</div>
     </div>
   </div>
@@ -108,6 +110,9 @@
       cancelEdit(todo) {
         todo.title =  this.beforeditCache
         todo.editing = false
+      },
+      checkAllTodos() {
+        this.todos.forEach( (todo) => todo.completed = event.target.checked)
       }
     }
   };
