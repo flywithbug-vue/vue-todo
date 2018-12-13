@@ -5,40 +5,65 @@
            placeholder="what needs to be done"
            v-model="newTodo"
            @keyup.enter="addTodo">
-    <div v-for="(todo, index) in todos"
-         :key="todo.id"
-         class="todo-item">
-      <div class="todo-item-left">
-        <input type="checkbox" v-model="todo.completed">
-        <div class="todo-item-label" v-if="!todo.editing"
-              @dblclick="editTodo(todo)"
-              :class="{ completed : todo.completed}">
-          {{ todo.title }}</div>
-        <input v-if="todo.editing"
-               @blur="doneEdit(todo)"
-               @keyup.enter="doneEdit(todo)"
-               @keyup.esc="cancelEdit(todo)"
-               class="todo-item-edit"
-               type="text"
-               v-model="todo.title" v-focus>
+    <transition-group name="fade" enter-active-class="animated flipInX" leave-active-class="animated flipOutX">
+      <div v-for="(todo, index) in todosFiltered"
+           :key="todo.id"
+           class="todo-item">
+        <div class="todo-item-left">
+          <input type="checkbox"
+                 v-model="todo.completed">
+          <div class="todo-item-label"
+               v-if="!todo.editing"
+               @dblclick="editTodo(todo)"
+               :class="{ completed : todo.completed}">
+            {{ todo.title }}</div>
+          <input v-if="todo.editing"
+                 @blur="doneEdit(todo)"
+                 @keyup.enter="doneEdit(todo)"
+                 @keyup.esc="cancelEdit(todo)"
+                 class="todo-item-edit"
+                 type="text"
+                 v-model="todo.title" v-focus>
+        </div>
+        <div class="remove-item"
+             @click="removeTodo(index)">
+          ✘
+        </div>
       </div>
-      <div class="remove-item"
-           @click="removeTodo(index)">
-        &times;
-      </div>
-    </div>
+    </transition-group>
     <div class="extra-container">
       <div><label><input type="checkbox"
                          :checked="!anyRemaining"
                          @change="checkAllTodos">Check All</label></div>
       <div>{{ remaining }} items left</div>
     </div>
+    <div class="extra-container">
+      <div>
+        <button :class="{ active : filter == 'all'}"
+                @click="filter='all'">All</button>
+        <button :class="{ active : filter == 'active'}"
+                @click="filter = 'active'">Active</button>
+        <button :class="{ active : filter == 'completed'}"
+                @click="filter = 'completed'">Completed</button>
+      </div>
+      <div>
+        <transition name="fade">
+          <button v-if="showClearCompletedButton"
+                  @click="clearCompleted">Clear Completed</button>
+        </transition>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+  import TodoItem from './TodoItem'
+
   export default {
     name: 'todo-list',
+    components: {
+      TodoItem,
+    },
     directives: {
       focus: {
         inserted: function(el) {
@@ -51,6 +76,7 @@
             newTodo: '',
             beforeditCache:'',
             idForTodo:4,
+            filter: 'all',
             todos:[
               {
                 'id': 1,
@@ -75,10 +101,23 @@
         },
     computed: {
       remaining() {
-        return this.todos.filter(todo => !todo.completed).length
+        return this.todos.filter(todo => !todo.completed).length;
       },
       anyRemaining() {
-        return this.remaining != 0
+        return this.remaining != 0;
+      },
+      todosFiltered() {
+        if (this.filter == 'all'){
+          return this.todos;
+        } else if (this.filter == 'active'){
+          return this.todos.filter(todo => !todo.completed)
+        } else if (this.filter == 'completed'){
+          return this.todos.filter(todo => todo.completed)
+        }
+        return this.todos;
+      },
+      showClearCompletedButton() {
+        return this.todos.filter(todo => todo.completed).length > 0
       }
     },
     methods: {
@@ -98,21 +137,24 @@
         this.todos.splice(index,1);
       },
       editTodo(todo) {
-        this.beforeditCache = todo.title
-        todo.editing = true
+        this.beforeditCache = todo.title;
+        todo.editing = true;
       },
       doneEdit(todo) {
         if (todo.title.trim() == '') {
-          todo.title = this.beforeditCache
+          todo.title = this.beforeditCache;
         };
-        todo.editing = false
+        todo.editing = false;
       },
       cancelEdit(todo) {
-        todo.title =  this.beforeditCache
-        todo.editing = false
+        todo.title =  this.beforeditCache;
+        todo.editing = false;
       },
       checkAllTodos() {
-        this.todos.forEach( (todo) => todo.completed = event.target.checked)
+        this.todos.forEach((todo) => todo.completed = event.target.checked);
+      },
+      clearCompleted() {
+        this.todos = this.todos.filter(todo => !todo.completed)
       }
     }
   };
@@ -120,7 +162,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-
+  @import url("https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css");
   .todo-input {
     width: 100%;
     padding: 10px 18px;
