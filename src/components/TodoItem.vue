@@ -2,7 +2,7 @@
   <div class="todo-item">
     <div class="todo-item-left">
       <input type="checkbox" v-model="completed">
-      <div v-if="!todo.editing"  @dblclick="editTodo" class="todo-item-label" :class="{ completed : completed }">{{ title }}</div>
+      <div v-if="!editing" @dblclick="editTodo" class="todo-item-label" :class="{ completed : completed }">{{ title }}</div>
       <input v-else class="todo-item-edit" type="text"
                v-model="title" @blur="doneEdit" @keyup.enter="doneEdit"
                @keyup.esc="cancelEdit" v-focus>
@@ -49,8 +49,8 @@ export default {
       this.$emit('removeTodo',index)
     },
     editTodo() {
-      this.beforeEditCache = title
-      this.todo.editing = true
+      this.beforeEditCache = this.title
+      this.editing = true
     },
     doneEdit() {
       if (this.title.trim() == '') {
