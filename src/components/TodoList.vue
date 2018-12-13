@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
     <input type="text"
            class="todo-input"
            placeholder="what needs to be done"
@@ -8,6 +8,7 @@
     <transition-group name="fade" enter-active-class="animated flipInX" leave-active-class="animated flipOutX">
       <todo-item v-for="(todo, index) in todosFiltered"
            :key="todo.id" :todo="todo" :index="index" @removeTodo="removeTodo">
+
       </todo-item>
     </transition-group>
     <div class="extra-container">
@@ -182,7 +183,7 @@
   }
 
   .todo-item-edit {
-    font-size: 24px;
+    font-size: 16px;
     color: #2c3e50;
     margin-left: 12px;
     width: 100%;
