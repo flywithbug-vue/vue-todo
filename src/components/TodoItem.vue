@@ -2,20 +2,16 @@
   <div class="todo-item">
     <div class="todo-item-left">
       <input type="checkbox" v-model="completed">
-      <div v-if="!editing"    @dblclick="editTodo" class="todo-item-label" :class="{ completed : completed}">
-        {{ title }}</div>
-        <input v-if="editing"
-             @blur="doneEdit"
-             @keyup.enter="doneEdit"
-             @keyup.esc="cancelEdit"
-             class="todo-item-edit"
-             type="text"
-             v-model="title" v-focus>
+      <div v-if="!todo.editing"  @dblclick="editTodo" class="todo-item-label" :class="{ completed : completed }">{{ title }}</div>
+      <input v-else class="todo-item-edit" type="text"
+               v-model="title" @blur="doneEdit" @keyup.enter="doneEdit"
+               @keyup.esc="cancelEdit" v-focus>
     </div>
     <div class="remove-item"
          @click="removeTodo(index)">
       ✘
     </div>
+
   </div>
 </template>
 
@@ -24,8 +20,8 @@ export default {
   name: 'todo-item',
   directives: {
     focus: {
-      inserted: function(el) {
-        el.focus();
+      inserted: function (el) {
+        el.focus()
       }
     }
   },
@@ -38,10 +34,6 @@ export default {
       type: Number,
       required: true,
     }
-    // checkAll: {
-    //   type: Boolean,
-    //   required: true,
-    // }
   },
   data() {
     return {
@@ -57,8 +49,8 @@ export default {
       this.$emit('removeTodo',index)
     },
     editTodo() {
-      this.beforeEditCache = title;
-      this.editing = true;
+      this.beforeEditCache = title
+      this.todo.editing = true
     },
     doneEdit() {
       if (this.title.trim() == '') {
