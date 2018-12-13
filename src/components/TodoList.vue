@@ -7,7 +7,11 @@
            @keyup.enter="addTodo">
     <transition-group name="fade" enter-active-class="animated flipInX" leave-active-class="animated flipOutX">
       <todo-item v-for="(todo, index) in todosFiltered"
-           :key="todo.id" :todo="todo" :index="index" @removeTodo="removeTodo" @finishedEidt="finishedEdit">
+                 :key="todo.id"
+                 :todo="todo"
+                 :index="index"
+                 @removeTodo="removeTodo"
+                 @finishedEdit="finishedEdit">
       </todo-item>
     </transition-group>
     <div class="extra-container">
