@@ -10,6 +10,7 @@
                  :key="todo.id"
                  :todo="todo"
                  :index="index"
+                 :checkAll="!anyRemaining"
                  @removeTodo="removeTodo"
                  @finishedEdit="finishedEdit">
       </todo-item>
@@ -46,13 +47,6 @@
     name: 'todo-list',
     components: {
       TodoItem,
-    },
-    directives: {
-      focus: {
-        inserted: function(el) {
-          el.focus();
-        }
-      }
     },
     data () {
           return {
@@ -118,20 +112,6 @@
       },
       removeTodo(index) {
         this.todos.splice(index,1);
-      },
-      editTodo(todo) {
-        this.beforeditCache = todo.title;
-        todo.editing = true;
-      },
-      doneEdit(todo) {
-        if (todo.title.trim() == '') {
-          todo.title = this.beforeditCache;
-        };
-        todo.editing = false;
-      },
-      cancelEdit(todo) {
-        todo.title =  this.beforeditCache;
-        todo.editing = false;
       },
       checkAllTodos() {
         this.todos.forEach((todo) => todo.completed = event.target.checked);

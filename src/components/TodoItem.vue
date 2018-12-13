@@ -2,7 +2,8 @@
   <div class="todo-item">
     <div class="todo-item-left">
       <input type="checkbox"
-             v-model="completed">
+             v-model="completed"
+             @change="doneEdit">
       <div v-if="!editing"
            @dblclick="editTodo"
            class="todo-item-label"
@@ -28,7 +29,7 @@ export default {
   name: 'todo-item',
   directives: {
     focus: {
-      inserted: function (el) {
+      inserted: function(el) {
         el.focus();
       }
     }
@@ -41,6 +42,10 @@ export default {
     index: {
       type: Number,
       required: true
+    },
+    checkAll: {
+      type: Boolean,
+      required: true
     }
   },
   data() {
@@ -52,9 +57,14 @@ export default {
       'beforeEditCache': ''
     };
   },
+  watch: {
+    checkAll() {
+      this.completed = this.checkAll ? true : this.todo.completed;
+    }
+  },
   methods: {
     removeTodo(index) {
-      this.$emit('removeTodo',index);
+      this.$emit('removeTodo', index);
     },
     editTodo() {
       this.beforeEditCache = this.title;
@@ -63,14 +73,10 @@ export default {
     doneEdit() {
       if (this.title.trim() == '') {
         this.title = this.beforeditCache;
-      };
-      if (this.title == this.beforeEditCache){
-        return
       }
       this.beforeEditCache = this.title;
       this.editing = false;
       // this.todo.title = this.title
-      console.log('doneEdit:'+this.title);
       this.$emit('finishedEdit', {
         'index': this.index,
         'todo': {
@@ -82,7 +88,7 @@ export default {
       });
     },
     cancelEdit() {
-      this.title =  this.beforeditCache;
+      this.title = this.beforeditCache;
       this.editing = false;
     }
   }

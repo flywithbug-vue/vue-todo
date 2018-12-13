@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
 git add .
-git commit -m "a"
+git commit -m $?
 git push -u origin master
