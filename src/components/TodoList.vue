@@ -14,20 +14,11 @@
       </todo-item>
     </transition-group>
     <div class="extra-container">
-      <div><label><input type="checkbox"
-                         :checked="!anyRemaining"
-                         @change="checkAllTodos">Check All</label></div>
-      <div>{{ remaining }} items left</div>
+      <todo-check-all :anyRemaining="anyRemaining"></todo-check-all>
+      <todo-remaining :remaining="remaining"></todo-remaining>
     </div>
     <div class="extra-container">
-      <div>
-        <button :class="{ active : filter == 'all'}"
-                @click="filter='all'">All</button>
-        <button :class="{ active : filter == 'active'}"
-                @click="filter = 'active'">Active</button>
-        <button :class="{ active : filter == 'completed'}"
-                @click="filter = 'completed'">Completed</button>
-      </div>
+      <todo-filtered></todo-filtered>
       <div>
         <transition name="fade">
           <button v-if="showClearCompletedButton"
@@ -40,10 +31,16 @@
 
 <script>
   import TodoItem from './TodoItem'
+  import TodoRemaining from './TodoItemRemaining';
+  import TodoCheckAll from './TodoCheckAll';
+  import TodoFiltered from './TodoFiltered';
 
   export default {
     name: 'todo-list',
     components: {
+      TodoFiltered,
+      TodoCheckAll,
+      TodoRemaining,
       TodoItem,
     },
     data () {
@@ -98,6 +95,9 @@
     created() {
       eventBus.$on('removeTodo', (index) => this.removeTodo(index))
       eventBus.$on('finishedEdit', (data) => this.finishedEdit(data))
+      eventBus.$on('checkAllChanged', (checked) => this.checkAllTodos(checked))
+      eventBus.$on('filterChanged', (filter) => this.filter = filter)
+
     },
     methods: {
       addTodo() {
