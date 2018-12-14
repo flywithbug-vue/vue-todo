@@ -3,9 +3,9 @@
 </template>
 
 <script>
-  export default {
-    name: 'TodoItemRemaining'
-  };
+export default {
+  name: 'TodoItemRemaining'
+};
 </script>
 
 <style scoped>
