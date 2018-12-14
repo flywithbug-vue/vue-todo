@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-cur_date="`date +%Y-%m-%d-%H-%m-%s`"
+cur_date="`date +%Y-%m-%d-%H-%M-%S`"
 
 git add .
 git commit -m $cur_date
