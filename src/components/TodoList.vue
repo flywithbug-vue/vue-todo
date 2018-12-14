@@ -10,9 +10,7 @@
                  :key="todo.id"
                  :todo="todo"
                  :index="index"
-                 :checkAll="!anyRemaining"
-                 @removeTodo="removeTodo"
-                 @finishedEdit="finishedEdit">
+                 :checkAll="!anyRemaining">
       </todo-item>
     </transition-group>
     <div class="extra-container">
@@ -96,6 +94,10 @@
       showClearCompletedButton() {
         return this.todos.filter(todo => todo.completed).length > 0
       }
+    },
+    created() {
+      eventBus.$on('removeTodo', (index) => this.removeTodo(index))
+      eventBus.$on('finishedEdit', (data) => this.finishedEdit(data))
     },
     methods: {
       addTodo() {
