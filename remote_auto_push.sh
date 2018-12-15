@@ -15,8 +15,9 @@ error() {
 cur_date="`date +%Y-%m-%d-%H:%M:%S`"
 dif=$*
 if [ "$dif" = "" ]; then
-    info "commit msg is empty。 use cur_date as commit info"
-    dif=$cur_date
+  error "请输入提交内容！ "
+exit 1
+#    dif=$cur_date
 fi
 
 git add .
