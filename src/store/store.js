@@ -59,6 +59,15 @@ export const store = new Vuex.Store({
         editing: false,
       })
     },
+    updateTodo(state, todo){
+      const index = state.todos.findIndex(item => item.id == todo.id)
+      state.todos.splice(index, 1,{
+        'id': todo.id,
+        'title': todo.title,
+        'completed': todo.completed,
+        'editing': todo.editing
+      })
+    },
     clearCompleted(state) {
       state.todos = state.todos.filter(todo => !todo.completed)
     },
@@ -72,14 +81,25 @@ export const store = new Vuex.Store({
       const index  = state.todos.findIndex(item => item.id == id)
       state.todos.splice(index,1);
     },
-    updateTodo(state, todo){
-      const index = state.todos.findIndex(item => item.id == todo.id)
-      state.todos.splice(index, 1,{
-        'id': todo.id,
-        'title': todo.title,
-        'completed': todo.completed,
-        'editing': todo.editing
-      })
-    }
+  },
+  actions: {
+    addTodo(context, todo){
+      context.commit('addTodo', todo)
+    },
+    updateTodo(context, todo){
+      context.commit('updateTodo', todo)
+    },
+    clearCompleted(context) {
+      context.commit('clearCompleted')
+    },
+    updateFilter(context,filter) {
+      context.commit('updateFilter',filter)
+    },
+    checkAll(context,checked) {
+      context.commit('checkAll',checked)
+    },
+    deleteTodo(context, id) {
+      context.commit('deleteTodo',id)
+    },
   }
 })

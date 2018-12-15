@@ -68,7 +68,7 @@ export default {
   },
   methods: {
     removeTodo() {
-      this.$store.commit('deleteTodo', this.id)
+      this.$store.dispatch('deleteTodo', this.id)
     },
     editTodo() {
       this.beforeEditCache = this.title;
@@ -79,7 +79,7 @@ export default {
         this.title = this.beforeditCache;
       }
       this.editing = false;
-      this.$store.commit('updateTodo',{
+      this.$store.dispatch('updateTodo',{
         'id': this.id,
         'title': this.title,
         'completed': this.completed,
