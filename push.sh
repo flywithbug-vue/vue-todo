@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+info() {
+     local green="\033[1;32m"
+     local normal="\033[0m"
+     echo -e "[${green}INFO${normal}] $1"
+}
+
 cur_date="`date +%Y-%m-%d-%H:%M:%S`"
 dif="$1"
 if [ -z "dif" ]; then
