@@ -70,11 +70,11 @@
         if (this.newTodo.trim().length == 0) {
           return;
         };
-        this.$store.state.todos.push({
+        this.$store.commit('addTodo',{
           id: this.idForTodo,
           title:this.newTodo,
-          completed:false
-        });
+        })
+
         this.newTodo = '';
         this.idForTodo++;
       },

@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     changeFilter(filter) {
-      this.$store.state.filter = filter
+      this.$store.commit('updateFilter',filter)
     }
   }
 };
