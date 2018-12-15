@@ -13,7 +13,7 @@
       </todo-item>
     </transition-group>
     <div class="extra-container">
-      <todo-check-all :anyRemaining="anyRemaining"></todo-check-all>
+      <todo-check-all></todo-check-all>
       <todo-remaining></todo-remaining>
     </div>
     <div class="extra-container">
@@ -66,16 +66,16 @@
       }
     },
     created() {
-      eventBus.$on('removeTodo', (index) => this.removeTodo(index))
-      eventBus.$on('finishedEdit', (data) => this.finishedEdit(data))
-      eventBus.$on('checkAllChanged', (checked) => this.checkAllTodos(checked))
+      // eventBus.$on('removeTodo', (index) => this.removeTodo(index))
+      // eventBus.$on('finishedEdit', (data) => this.finishedEdit(data))
+      // eventBus.$on('checkAllChanged', (checked) => this.checkAllTodos(checked))
       eventBus.$on('filterChanged', (filter) => this.$store.state.filter = filter)
       eventBus.$on('clearCompleted',() => this.clearCompleted())
     },
     beforeDestroy() {
-      eventBus.$off('removeTodo', (index) => this.removeTodo(index))
-      eventBus.$off('finishedEdit', (data) => this.finishedEdit(data))
-      eventBus.$off('checkAllChanged', (checked) => this.checkAllTodos(checked))
+      // eventBus.$off('removeTodo', (index) => this.removeTodo(index))
+      // eventBus.$off('finishedEdit', (data) => this.finishedEdit(data))
+      // eventBus.$off('checkAllChanged', (checked) => this.checkAllTodos(checked))
       eventBus.$off('filterChanged', (filter) => this.$store.state.filter = filter)
       eventBus.$off('clearCompleted',() => this.clearCompleted())
     },
@@ -102,7 +102,7 @@
         this.$store.state.todos = this.$store.state.todos.filter(todo => !todo.completed)
       },
       finishedEdit(data) {
-        console.log(data.todo.title)
+        // console.log(data.todo.title)
         const index = this.$store.state.todos.findIndex(item => item.id == data.todo.id)
         this.$store.state.todos.splice(index, 1,data.todo)
       }
