@@ -50,27 +50,6 @@
             newTodo: '',
             beforeditCache:'',
             idForTodo:4,
-            filter: 'all',
-            todos:[
-              {
-                'id': 1,
-                'title': 'Finish Vue Screencast',
-                'completed': false,
-                'editing': false
-              },
-              {
-                'id': 2,
-                'title': 'Take over world',
-                'completed': false,
-                'editing': false
-              },
-              {
-                'id': 3,
-                'title': 'hello world',
-                'completed': false,
-                'editing': false
-              }
-            ]
           };
         },
     computed: {
@@ -131,7 +110,9 @@
         this.$store.state.todos = this.$store.state.todos.filter(todo => !todo.completed)
       },
       finishedEdit(data) {
-        this.$store.state.todos.splice(data.index, 1,data.todo)
+        console.log(data.todo.title)
+        const index = this.$store.state.todos.findIndex(item => item.id == data.todo.id)
+        this.$store.state.todos.splice(index, 1,data.todo)
       }
     }
   };
