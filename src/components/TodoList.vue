@@ -35,6 +35,7 @@
   import TodoFiltered from './TodoFiltered';
   import TodoClearCompleted from './TodoClearCompleted';
 
+
   export default {
     name: 'todo-list',
     components: {
@@ -74,38 +75,45 @@
         },
     computed: {
       remaining() {
-        return this.todos.filter(todo => !todo.completed).length;
+        return this.$store.state.todos.filter(todo => !todo.completed).length;
       },
       anyRemaining() {
         return this.remaining != 0;
       },
       todosFiltered() {
-        if (this.filter == 'all'){
-          return this.todos;
-        } else if (this.filter == 'active'){
-          return this.todos.filter(todo => !todo.completed)
-        } else if (this.filter == 'completed'){
-          return this.todos.filter(todo => todo.completed)
+        if (this.$store.state.filter == 'all'){
+          return this.$store.state.todos;
+        } else if (this.$store.state.filter == 'active'){
+          return this.$store.state.todos.filter(todo => !todo.completed)
+        } else if (this.$store.state.filter == 'completed'){
+          return this.$store.state.todos.filter(todo => todo.completed)
         }
-        return this.todos;
+        return this.$store.state.todos;
       },
       showClearCompletedButton() {
-        return this.todos.filter(todo => todo.completed).length > 0
+        return this.$store.state.todos.filter(todo => todo.completed).length > 0
       }
     },
     created() {
       eventBus.$on('removeTodo', (index) => this.removeTodo(index))
       eventBus.$on('finishedEdit', (data) => this.finishedEdit(data))
       eventBus.$on('checkAllChanged', (checked) => this.checkAllTodos(checked))
-      eventBus.$on('filterChanged', (filter) => this.filter = filter)
+      eventBus.$on('filterChanged', (filter) => this.$store.state.filter = filter)
       eventBus.$on('clearCompleted',() => this.clearCompleted())
+    },
+    beforeDestroy() {
+      eventBus.$off('removeTodo', (index) => this.removeTodo(index))
+      eventBus.$off('finishedEdit', (data) => this.finishedEdit(data))
+      eventBus.$off('checkAllChanged', (checked) => this.checkAllTodos(checked))
+      eventBus.$off('filterChanged', (filter) => this.$store.state.filter = filter)
+      eventBus.$off('clearCompleted',() => this.clearCompleted())
     },
     methods: {
       addTodo() {
         if (this.newTodo.trim().length == 0) {
           return;
         };
-        this.todos.push({
+        this.$store.state.todos.push({
           id: this.idForTodo,
           title:this.newTodo,
           completed:false
@@ -114,16 +122,16 @@
         this.idForTodo++;
       },
       removeTodo(index) {
-        this.todos.splice(index,1);
+        this.$store.state.todos.splice(index,1);
       },
       checkAllTodos() {
-        this.todos.forEach((todo) => todo.completed = event.target.checked);
+        this.$store.state.todos.forEach((todo) => todo.completed = event.target.checked);
       },
       clearCompleted() {
-        this.todos = this.todos.filter(todo => !todo.completed)
+        this.$store.state.todos = this.$store.state.todos.filter(todo => !todo.completed)
       },
       finishedEdit(data) {
-        this.todos.splice(data.index, 1,data.todo)
+        this.$store.state.todos.splice(data.index, 1,data.todo)
       }
     }
   };
