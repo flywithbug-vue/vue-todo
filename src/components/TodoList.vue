@@ -6,7 +6,7 @@
            v-model="newTodo"
            @keyup.enter="addTodo">
     <transition-group name="fade" enter-active-class="animated flipInX" leave-active-class="animated flipOutX">
-      <todo-item v-for="(todo, index) in todosFiltered"
+      <todo-item v-for="todo in todosFiltered"
                  :key="todo.id"
                  :todo="todo"
                  :checkAll="!anyRemaining">
@@ -20,7 +20,7 @@
       <todo-filtered></todo-filtered>
       <div>
         <transition name="fade">
-          <todo-clear-completed :showClearCompletedButton="showClearCompletedButton"></todo-clear-completed>
+          <todo-clear-completed></todo-clear-completed>
         </transition>
       </div>
     </div>
@@ -70,14 +70,14 @@
       // eventBus.$on('finishedEdit', (data) => this.finishedEdit(data))
       // eventBus.$on('checkAllChanged', (checked) => this.checkAllTodos(checked))
       eventBus.$on('filterChanged', (filter) => this.$store.state.filter = filter)
-      eventBus.$on('clearCompleted',() => this.clearCompleted())
+      // eventBus.$on('clearCompleted',() => this.clearCompleted())
     },
     beforeDestroy() {
       // eventBus.$off('removeTodo', (index) => this.removeTodo(index))
       // eventBus.$off('finishedEdit', (data) => this.finishedEdit(data))
       // eventBus.$off('checkAllChanged', (checked) => this.checkAllTodos(checked))
       eventBus.$off('filterChanged', (filter) => this.$store.state.filter = filter)
-      eventBus.$off('clearCompleted',() => this.clearCompleted())
+      // eventBus.$off('clearCompleted',() => this.clearCompleted())
     },
     methods: {
       addTodo() {
