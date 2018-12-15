@@ -15,8 +15,7 @@ error() {
 cur_date="`date +%Y-%m-%d-%H:%M:%S`"
 dif=$*
 if [ -z $dif ]; then
-    info "commit msg is empty。
-    use cur_date as commit info"
+    info "commit msg is empty。 use cur_date as commit info"
     dif=$cur_date
 fi
 
