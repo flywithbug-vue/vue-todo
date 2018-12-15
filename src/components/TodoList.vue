@@ -54,23 +54,16 @@
         },
     computed: {
       remaining() {
-        return this.$store.state.todos.filter(todo => !todo.completed).length;
+        return this.$store.getters.remaining;
       },
       anyRemaining() {
-        return this.remaining != 0;
+        return this.$store.getters.anyRemaining;
       },
       todosFiltered() {
-        if (this.$store.state.filter == 'all'){
-          return this.$store.state.todos;
-        } else if (this.$store.state.filter == 'active'){
-          return this.$store.state.todos.filter(todo => !todo.completed)
-        } else if (this.$store.state.filter == 'completed'){
-          return this.$store.state.todos.filter(todo => todo.completed)
-        }
-        return this.$store.state.todos;
+        return this.$store.getters.todosFiltered
       },
       showClearCompletedButton() {
-        return this.$store.state.todos.filter(todo => todo.completed).length > 0
+        return this.$store.getters.showClearCompletedButton
       }
     },
     created() {
