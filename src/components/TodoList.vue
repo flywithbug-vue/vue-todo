@@ -9,13 +9,12 @@
       <todo-item v-for="(todo, index) in todosFiltered"
                  :key="todo.id"
                  :todo="todo"
-                 :index="index"
                  :checkAll="!anyRemaining">
       </todo-item>
     </transition-group>
     <div class="extra-container">
       <todo-check-all :anyRemaining="anyRemaining"></todo-check-all>
-      <todo-remaining :remaining="remaining"></todo-remaining>
+      <todo-remaining></todo-remaining>
     </div>
     <div class="extra-container">
       <todo-filtered></todo-filtered>

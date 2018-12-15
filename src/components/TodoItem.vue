@@ -19,7 +19,7 @@
     <div>
       <button @click="pluralize">Plural</button>
       <span class="remove-item"
-            @click="removeTodo(index)">
+            @click="removeTodo(todo.id)">
       ✘
     </span>
     </div>
@@ -39,10 +39,6 @@ export default {
   props: {
     todo: {
       type: Object,
-      required: true
-    },
-    index: {
-      type: Number,
       required: true
     },
     checkAll: {
@@ -71,8 +67,10 @@ export default {
     eventBus.$off('pluralize', this.handlePluralize)
   },
   methods: {
-    removeTodo(index) {
+    removeTodo(id) {
+      const index  = this.$store.state.todos.findIndex(item => item.id ==  id)
       eventBus.$emit('removeTodo', index);
+
     },
     editTodo() {
       this.beforeEditCache = this.title;
