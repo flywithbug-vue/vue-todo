@@ -65,20 +65,6 @@
         return this.$store.getters.showClearCompletedButton
       }
     },
-    created() {
-      // eventBus.$on('removeTodo', (index) => this.removeTodo(index))
-      // eventBus.$on('finishedEdit', (data) => this.finishedEdit(data))
-      // eventBus.$on('checkAllChanged', (checked) => this.checkAllTodos(checked))
-      eventBus.$on('filterChanged', (filter) => this.$store.state.filter = filter)
-      // eventBus.$on('clearCompleted',() => this.clearCompleted())
-    },
-    beforeDestroy() {
-      // eventBus.$off('removeTodo', (index) => this.removeTodo(index))
-      // eventBus.$off('finishedEdit', (data) => this.finishedEdit(data))
-      // eventBus.$off('checkAllChanged', (checked) => this.checkAllTodos(checked))
-      eventBus.$off('filterChanged', (filter) => this.$store.state.filter = filter)
-      // eventBus.$off('clearCompleted',() => this.clearCompleted())
-    },
     methods: {
       addTodo() {
         if (this.newTodo.trim().length == 0) {
@@ -92,20 +78,6 @@
         this.newTodo = '';
         this.idForTodo++;
       },
-      removeTodo(index) {
-        this.$store.state.todos.splice(index,1);
-      },
-      checkAllTodos() {
-        this.$store.state.todos.forEach((todo) => todo.completed = event.target.checked);
-      },
-      clearCompleted() {
-        this.$store.state.todos = this.$store.state.todos.filter(todo => !todo.completed)
-      },
-      finishedEdit(data) {
-        // console.log(data.todo.title)
-        const index = this.$store.state.todos.findIndex(item => item.id == data.todo.id)
-        this.$store.state.todos.splice(index, 1,data.todo)
-      }
     }
   };
 </script >
