@@ -20,3 +20,5 @@ resources/private_key
 resources/public_key.pub
 log/*
 config.json
+privatesources/private_key
+privatesources/public_key.pub
