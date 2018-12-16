@@ -76,7 +76,7 @@ export default {
     },
     doneEdit() {
       if (this.title.trim() == '') {
-        this.title = this.beforeditCache;
+        this.title = this.beforeEditCache;
       }
       this.editing = false;
       this.$store.dispatch('updateTodo',{
@@ -87,7 +87,7 @@ export default {
       })
     },
     cancelEdit() {
-      this.title = this.beforeditCache;
+      this.title = this.beforeEditCache;
       this.editing = false;
     },
     pluralize() {
