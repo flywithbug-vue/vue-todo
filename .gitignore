@@ -7,7 +7,6 @@
 *.dll
 *.so
 *.dylib
-config.json
 
 # Test binary, build with `go test -c`
 *.test
@@ -20,3 +19,4 @@ config.json
 resources/private_key
 resources/public_key.pub
 log/*
+config.json
