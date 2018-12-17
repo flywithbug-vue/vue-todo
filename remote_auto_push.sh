@@ -15,7 +15,7 @@ error() {
 cur_date="`date +%Y-%m-%d-%H:%M:%S`"
 dif=$*
 if [ x"${dif}" = x ]; then
-  error "请输入提交内容！ "
+  error "请输入提交内容!"
 exit 1
 #    dif=$cur_date
 else
