@@ -1,9 +1,10 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
 	"strings"
 	"todo-go/server/middleware"
+
+	"github.com/gin-gonic/gin"
 )
 
 type ginHandleFunc struct {
@@ -17,7 +18,7 @@ type ginHandleFunc struct {
 var routerss = []ginHandleFunc{
 	ginHandleFunc{
 		handler:  IndexHandler,
-		needAuth: true,
+		needAuth: false,
 		method:   "GET",
 		path:     "/",
 	},

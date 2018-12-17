@@ -7,7 +7,7 @@ import (
 
 var globalS *mgo.Session
 
-func DialMgo(url string)  {
+func DialMgo(url string) {
 	s, err := mgo.Dial(url)
 	if err != nil {
 		log4go.Fatal("create session error ", err)
@@ -16,13 +16,13 @@ func DialMgo(url string)  {
 	log4go.Info("mongodb connected")
 }
 
-func connect(db,collection string)(*mgo.Session,*mgo.Collection)  {
+func connect(db, collection string) (*mgo.Session, *mgo.Collection) {
 	if globalS == nil {
 		log4go.Fatal("mgo disconnected")
 	}
 	s := globalS.Copy()
 	c := s.DB(db).C(collection)
-	return s,c
+	return s, c
 }
 
 func Insert(db, collection string, docs ...interface{}) error {
@@ -53,7 +53,7 @@ func FindAll(db, collection string, query, selector, results interface{}) error 
 func Update(db, collection string, selector, update interface{}) error {
 	ms, c := connect(db, collection)
 	defer ms.Close()
-	return c.Update(selector,update)
+	return c.Update(selector, update)
 }
 
 func Remove(db, collection string, selector interface{}) error {

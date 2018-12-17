@@ -2,7 +2,7 @@ package handler
 
 import (
 	"net/http"
-	"todo-go/common"
+	"todo-go/core/mongo"
 	"todo-go/model"
 
 	"github.com/flywithbug/log4go"
@@ -21,6 +21,16 @@ func IndexHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	userId, _ := c.Get(common.KeyUserId)
-	log4go.Info("index handler %s", userId)
+	//userId, _ := c.Get(common.KeyUserId)
+	//log4go.Info("index handler %s", userId)
+	//err := mongo.CreateIncrementIds(model.DBName(), "user")
+	//if err != nil {
+	//	log4go.Error(err.Error())
+	//}
+	inId, err := mongo.GetIncrementIdByName(model.DBName(), "book1")
+	if err != nil {
+		log4go.Error(err.Error())
+	}
+	log4go.Info("IncrementId: %d", inId)
+
 }

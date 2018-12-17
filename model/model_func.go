@@ -1,8 +1,14 @@
 package model
 
-const (
-	db = "todo-go"
-)
+var db = "todpo"
+
+func SetDBName(dbName string) {
+	db = dbName
+}
+
+func DBName() string {
+	return db
+}
 
 type ModelOperation interface {
 	FindAll() ([]interface{}, error)

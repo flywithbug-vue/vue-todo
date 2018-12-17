@@ -2,11 +2,13 @@ package main
 
 import (
 	"flag"
-	log "github.com/flywithbug/log4go"
 	"todo-go/config"
 	"todo-go/core/jwt"
 	"todo-go/core/mongo"
+	"todo-go/model"
 	"todo-go/server"
+
+	log "github.com/flywithbug/log4go"
 )
 
 //log 启动配置
@@ -36,7 +38,7 @@ func main() {
 
 	SetLog()
 	defer log.Close()
-
+	model.SetDBName(conf.DBConfig.DBName)
 	//mongodb启动连接
 	mongo.DialMgo(conf.DBConfig.Url)
 	go func() {
