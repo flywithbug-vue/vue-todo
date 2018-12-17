@@ -13,15 +13,13 @@ error() {
 }
 
 cur_date="`date +%Y-%m-%d-%H:%M:%S`"
-
 dif=$*
-
-if [$dif == ""]; then
+if [ "$dif" = "" ]; then
   error "请输入提交内容！ "
 exit 1
 #    dif=$cur_date
 else
-    info ${dif}
+    info $dif
 fi
 
 git add .
