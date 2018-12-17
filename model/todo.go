@@ -20,7 +20,7 @@ type Todo struct {
 	Completed bool   `json:"completed" bson:"completed"`
 	UpdatedAt int64  `json:"updated_at" bson:"updated_at"`
 	CreatedAt int64  `json:"created_at" bson:"created_at"`
-	Destroy   bool   `json:"destroy,omitempty" bson:"destroy,omitempty"`
+	Destroy   bool   `json:"destroy,omitempty" bson:"destroy"`
 }
 
 func InsertTodo(t *Todo) error {
