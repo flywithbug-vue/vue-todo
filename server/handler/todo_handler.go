@@ -31,7 +31,7 @@ func AddTodoHandler(c *gin.Context) {
 	todo := new(model.Todo)
 	err := c.BindJSON(&todo)
 	if err != nil {
-		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid:"+err.Error())
 		return
 	}
 	if todo.Title == "" {
@@ -55,7 +55,7 @@ func UpdateTodoHandler(c *gin.Context) {
 	todo := new(model.Todo)
 	err := c.BindJSON(&todo)
 	if err != nil {
-		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid:"+err.Error())
 		return
 	}
 	if todo.Id == 0 {
@@ -79,18 +79,23 @@ func DeleteTodoHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	todo := new(model.Todo)
-	err := c.BindJSON(&todo)
-	if err != nil {
-		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+	parId := c.Param("id")
+	if parId == "" {
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: id can not be nil")
 		return
 	}
+	id, err := strconv.ParseInt(parId, 10, 64)
+	if err != nil {
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid:"+err.Error())
+		return
+	}
+	todo := new(model.Todo)
+	todo.Id = id
 	if todo.Id == 0 {
 		aRes.SetErrorInfo(http.StatusBadRequest, "id can not be nil")
 		return
 	}
-	todo.Destroy = true
-	err = todo.Update()
+	err = todo.DestroyT()
 	if err != nil {
 		aRes.SetErrorInfo(http.StatusNotFound, err.Error())
 		return
@@ -106,7 +111,7 @@ func GetTodoHandler(c *gin.Context) {
 
 	parId := c.Param("id")
 	if parId == "" {
-		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid")
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: id can not be nil")
 		return
 	}
 	id, err := strconv.ParseInt(parId, 10, 64)

@@ -98,8 +98,8 @@ var routers = []ginHandleFunc{
 	{
 		handler:  DeleteTodoHandler,
 		needAuth: false,
-		method:   "DELETE",
-		path:     "/todo/delete",
+		method:   "POST",
+		path:     "/todo/delete/:id",
 	},
 	{
 		handler:  GetTodoHandler,

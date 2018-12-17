@@ -94,7 +94,6 @@ export const store = new Vuex.Store({
       }).catch(error => {
         console.log(error)
       })
-      // context.commit('updateTodo', todo)
     },
     updateFilter(context,filter) {
       context.commit('updateFilter',filter)
@@ -104,7 +103,11 @@ export const store = new Vuex.Store({
       context.commit('checkAll',checked)
     },
     deleteTodo(context, id) {
-      context.commit('deleteTodo',id)
+      axios.post('/todo/delete/' + id).then(() => {
+        context.commit('deleteTodo',id)
+      }).catch(error => {
+        console.log(error)
+      })
     },
     clearCompleted(context) {
       context.commit('clearCompleted')

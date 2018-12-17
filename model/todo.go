@@ -65,6 +65,14 @@ func (t *Todo) Remove() error {
 	return mongo.Remove(db, todoCollection, bson.M{"_id": t.Id})
 }
 
+func (t *Todo) DestroyT() error {
+	if t.Id == 0 {
+		return errors.New("item id can not be 0")
+	}
+	t.UpdatedAt = time.Now().Unix()
+	return mongo.Update(db, todoCollection, bson.M{"_id": t.Id}, bson.M{"$set": bson.M{"destroy": true, "updated_at": t.UpdatedAt}})
+}
+
 func (t *Todo) Update() error {
 	if t.Id == 0 {
 		return errors.New("item id can not be 0")
