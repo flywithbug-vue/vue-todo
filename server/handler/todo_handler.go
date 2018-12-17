@@ -47,6 +47,33 @@ func AddTodoHandler(c *gin.Context) {
 	aRes.AddResponseInfo("todo", todo)
 }
 
+func UpdateTodoHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(http.StatusOK, aRes)
+	}()
+	todo := new(model.Todo)
+	err := c.BindJSON(&todo)
+	if err != nil {
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		return
+	}
+	if todo.Id == 0 {
+		aRes.SetErrorInfo(http.StatusBadRequest, "id can not be 0")
+		return
+	}
+	if todo.Title == "" {
+		aRes.SetErrorInfo(http.StatusBadRequest, "title can not be nil")
+		return
+	}
+	err = todo.Update()
+	if err != nil {
+		aRes.SetErrorInfo(http.StatusInternalServerError, err.Error())
+		return
+	}
+	aRes.AddResponseInfo("todo", todo)
+}
+
 func DeleteTodoHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
@@ -62,7 +89,8 @@ func DeleteTodoHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "id can not be nil")
 		return
 	}
-	err = todo.Remove(todo.Id)
+	todo.Destroy = true
+	err = todo.Update()
 	if err != nil {
 		aRes.SetErrorInfo(http.StatusNotFound, err.Error())
 		return

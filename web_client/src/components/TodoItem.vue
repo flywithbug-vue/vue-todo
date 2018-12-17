@@ -75,10 +75,14 @@ export default {
       this.editing = true;
     },
     doneEdit() {
+      this.editing = false
       if (this.title.trim() == '') {
         this.title = this.beforeEditCache;
       }
-      this.editing = false;
+      if (this.title == this.beforeEditCache){
+        return
+      }
+      this.beforeEditCache = this.title
       this.$store.dispatch('updateTodo',{
         'id': this.id,
         'title': this.title,

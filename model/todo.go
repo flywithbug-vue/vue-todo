@@ -1,6 +1,7 @@
 package model
 
 import (
+	"errors"
 	"time"
 	"todo-go/core/mongo"
 
@@ -56,6 +57,18 @@ func FindTodoById(id int64) (*Todo, error) {
 	return todo, err
 }
 
-func (t *Todo) Remove(id int64) error {
-	return mongo.Remove(db, todoCollection, bson.M{"_id": id})
+func (t *Todo) Remove() error {
+	if t.Id == 0 {
+		return errors.New("item id can not be 0")
+	}
+	t.UpdatedAt = time.Now().Unix()
+	return mongo.Remove(db, todoCollection, bson.M{"_id": t.Id})
+}
+
+func (t *Todo) Update() error {
+	if t.Id == 0 {
+		return errors.New("item id can not be 0")
+	}
+	t.UpdatedAt = time.Now().Unix()
+	return mongo.Update(db, todoCollection, bson.M{"_id": t.Id}, t)
 }

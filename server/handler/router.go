@@ -107,4 +107,10 @@ var routers = []ginHandleFunc{
 		method:   "GET",
 		path:     "/todo/item/:id",
 	},
+	{
+		handler:  UpdateTodoHandler,
+		needAuth: false,
+		method:   "PUT",
+		path:     "/todo/item",
+	},
 }

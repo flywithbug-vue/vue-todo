@@ -85,7 +85,16 @@ export const store = new Vuex.Store({
       })
     },
     updateTodo(context, todo){
-      context.commit('updateTodo', todo)
+      axios.put('/todo/item',{
+        id:todo.id,
+        title:todo.title,
+        completed:todo.completed
+      }).then(response => {
+        context.commit('updateTodo',response.data.data.todo)
+      }).catch(error => {
+        console.log(error)
+      })
+      // context.commit('updateTodo', todo)
     },
     updateFilter(context,filter) {
       context.commit('updateFilter',filter)
