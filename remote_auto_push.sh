@@ -19,7 +19,7 @@ if ["$dif" == ""]; then
 exit 1
 #    dif=$cur_date
 else
-    info $dif
+    info "$dif"
 fi
 
 git add .
