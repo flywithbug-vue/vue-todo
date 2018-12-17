@@ -5,12 +5,14 @@ import (
 	"todo-go/server/handler"
 	"todo-go/server/middleware"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func StartApi(port string, rPrefix string, authPrefix string) {
 	r := gin.New()
 	r.Use(middleware.Logger(), gin.Recovery())
+	r.Use(cors.Default())
 	r.Use(middleware.CookieMiddleware())
 	handler.RegisterRouters(r, rPrefix, authPrefix)
 	err := r.Run(port)
