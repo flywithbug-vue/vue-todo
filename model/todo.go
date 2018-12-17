@@ -18,8 +18,8 @@ type Todo struct {
 	Id        int64  `json:"id" bson:"_id"`
 	Title     string `json:"title" bson:"title"`
 	Completed bool   `json:"completed" bson:"completed"`
-	UpdatedAt int64  `json:"updated_at" bson:"updated_at"`
-	CreatedAt int64  `json:"created_at" bson:"created_at"`
+	UpdatedAt int64  `json:"updated_at,omitempty" bson:"updated_at"`
+	CreatedAt int64  `json:"created_at,omitempty" bson:"created_at"`
 	Destroy   bool   `json:"destroy,omitempty" bson:"destroy"`
 }
 
@@ -36,9 +36,17 @@ func InsertTodo(t *Todo) error {
 	return mongo.Insert(db, todoCollection, t)
 }
 
+//selector bson.M{"updated_at": 0, "created_at": 0} value值为0时不获取值
 func FindAllTodos() ([]Todo, error) {
 	var results []Todo
 	err := mongo.FindAll(db, todoCollection, bson.M{"destroy": false}, nil, &results)
+	return results, err
+}
+
+// query :bson.M{"destroy": false}「filter」. selector：bson.M{"updated_at": 0, "created_at": 0}value值为0时不获取值
+func FindTodos(query, selector interface{}) ([]Todo, error) {
+	var results []Todo
+	err := mongo.FindAll(db, todoCollection, query, selector, &results)
 	return results, err
 }
 
