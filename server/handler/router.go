@@ -15,43 +15,11 @@ type ginHandleFunc struct {
 }
 
 //host:port/auth_prefix/prefix/path
-var routerss = []ginHandleFunc{
-	{
-		handler:  IndexHandler,
-		needAuth: false,
-		method:   "GET",
-		path:     "/",
-	},
-	{
-		handler:  LoginHandler,
-		needAuth: false,
-		method:   "POST",
-		path:     "/login",
-	},
-	{
-		handler:  TodoListHandler,
-		needAuth: false,
-		method:   "GET",
-		path:     "/todo/list",
-	},
-	{
-		handler:  AddTodoHandler,
-		needAuth: false,
-		method:   "POST",
-		path:     "/todo/add",
-	},
-	{
-		handler:  DeleteTodoHandler,
-		needAuth: false,
-		method:   "POST",
-		path:     "/todo/delete",
-	},
-}
 
-func RegisterRouters(r *gin.Engine, prefix string, auth_prefix string) {
-	jwtR := r.Group(prefix + auth_prefix)
+func RegisterRouters(r *gin.Engine, prefix string, authPrefix string) {
+	jwtR := r.Group(prefix + authPrefix)
 	jwtR.Use(middleware.JWTAuthMiddleware())
-	for _, v := range routerss {
+	for _, v := range routers {
 		path := strings.ToLower(v.path)
 		if !v.needAuth {
 			path = strings.ToLower(prefix + v.path)
@@ -100,4 +68,43 @@ func funcDoRouteRegister(needAuth bool, method, route string, handler gin.Handle
 			r.GET(route, handler)
 		}
 	}
+}
+
+var routers = []ginHandleFunc{
+	{
+		handler:  IndexHandler,
+		needAuth: false,
+		method:   "GET",
+		path:     "/",
+	},
+	{
+		handler:  LoginHandler,
+		needAuth: false,
+		method:   "POST",
+		path:     "/login",
+	},
+	{
+		handler:  TodoListHandler,
+		needAuth: false,
+		method:   "GET",
+		path:     "/todo/list",
+	},
+	{
+		handler:  AddTodoHandler,
+		needAuth: false,
+		method:   "POST",
+		path:     "/todo/add",
+	},
+	{
+		handler:  DeleteTodoHandler,
+		needAuth: false,
+		method:   "POST",
+		path:     "/todo/delete",
+	},
+	{
+		handler:  GetTodoHandler,
+		needAuth: false,
+		method:   "GET",
+		path:     "/todo/item/:id",
+	},
 }

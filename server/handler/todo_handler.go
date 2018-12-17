@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"strconv"
 	"todo-go/model"
 
 	"github.com/flywithbug/log4go"
@@ -63,8 +64,32 @@ func DeleteTodoHandler(c *gin.Context) {
 	}
 	err = todo.Remove(todo.Id)
 	if err != nil {
-		aRes.SetErrorInfo(http.StatusBadRequest, err.Error())
+		aRes.SetErrorInfo(http.StatusNotFound, err.Error())
 		return
 	}
 	aRes.SetSuccessInfo(http.StatusOK, "success")
+}
+
+func GetTodoHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(http.StatusOK, aRes)
+	}()
+
+	parId := c.Param("id")
+	if parId == "" {
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid")
+		return
+	}
+	id, err := strconv.ParseInt(parId, 10, 64)
+	if err != nil {
+		aRes.SetErrorInfo(http.StatusBadRequest, err.Error())
+		return
+	}
+	todo, err := model.FindTodoById(id)
+	if err != nil {
+		aRes.SetErrorInfo(http.StatusNotFound, err.Error())
+		return
+	}
+	aRes.AddResponseInfo("todo", todo)
 }
