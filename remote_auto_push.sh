@@ -18,6 +18,8 @@ if [ "$dif" = "" ]; then
   error "请输入提交内容！ "
 exit 1
 #    dif=$cur_date
+else
+    info $dif
 fi
 
 git add .
