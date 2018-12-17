@@ -34,6 +34,12 @@ var routerss = []ginHandleFunc{
 		method:   "GET",
 		path:     "/todo/list",
 	},
+	{
+		handler:  AddTodoHandler,
+		needAuth: false,
+		method:   "POST",
+		path:     "/todo/add",
+	},
 }
 
 func RegisterRouters(r *gin.Engine, prefix string, auth_prefix string) {

@@ -10,6 +10,7 @@ import (
 
 const (
 	collectionsIncrementIds = "increment_ids"
+	IncrementIdsBegain      = 10000
 )
 
 var incrementDBName = "increment"
@@ -34,7 +35,7 @@ type incrementIds struct {
 func createIncrementIds(incrementName string) error {
 	cou := incrementIds{
 		Id:            incrementName,
-		SequenceValue: 1,
+		SequenceValue: IncrementIdsBegain,
 	}
 	return Insert(incrementDBName, collectionsIncrementIds, cou)
 }
@@ -55,7 +56,7 @@ func GetIncrementId(incrementName string) (int64, error) {
 			log4go.Error(err.Error())
 			return -1, err
 		}
-		increment.SequenceValue = 1
+		increment.SequenceValue = IncrementIdsBegain
 	}
 	return increment.SequenceValue, nil
 }

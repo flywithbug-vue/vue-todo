@@ -21,3 +21,25 @@ func TodoListHandler(c *gin.Context) {
 	}
 	aRes.AddResponseInfo("list", todos)
 }
+
+func AddTodoHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(http.StatusOK, aRes)
+	}()
+	title := c.PostForm("title")
+	if title == "" {
+		log4go.Info("title can not be nil")
+		aRes.SetErrorInfo(http.StatusInternalServerError, "title can not be nil")
+		return
+	}
+	todo := new(model.Todo)
+	todo.Title = title
+	err := model.InsertTodo(todo)
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusInternalServerError, err.Error())
+		return
+	}
+	aRes.AddResponseInfo("todo", todo)
+}
