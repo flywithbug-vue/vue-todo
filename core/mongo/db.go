@@ -1,7 +1,6 @@
 package mongo
 
 import (
-	"github.com/flywithbug/log4go"
 	"gopkg.in/mgo.v2"
 )
 
@@ -10,15 +9,14 @@ var globalS *mgo.Session
 func DialMgo(url string) {
 	s, err := mgo.Dial(url)
 	if err != nil {
-		log4go.Fatal("create session error ", err)
+		panic(err)
 	}
 	globalS = s
-	log4go.Info("mongodb connected")
 }
 
 func connect(db, collection string) (*mgo.Session, *mgo.Collection) {
 	if globalS == nil {
-		log4go.Fatal("mgo disconnected")
+		panic("mgo disconnected")
 	}
 	s := globalS.Copy()
 	c := s.DB(db).C(collection)

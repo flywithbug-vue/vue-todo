@@ -1,16 +1,23 @@
 package model
 
-var db = "todpo"
+import "todo-go/core/mongo"
+
+var db = "todo"
 
 func SetDBName(dbName string) {
 	db = dbName
+	mongo.SetIncrementDBName(dbName)
+}
+
+func init() {
+	mongo.SetIncrementDBName(db)
 }
 
 func DBName() string {
 	return db
 }
 
-type ModelOperation interface {
+type OperationModel interface {
 	FindAll() ([]interface{}, error)
 	Insert() error
 	Update(id string) error

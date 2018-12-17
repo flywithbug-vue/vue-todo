@@ -29,7 +29,7 @@ func main() {
 	flag.Parse()
 	err := config.ReadConfig(*configPath)
 	if err != nil {
-		log.Fatal("读取配置文件错误:", err.Error())
+		panic(err)
 	}
 	conf := config.Conf()
 

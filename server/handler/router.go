@@ -16,17 +16,23 @@ type ginHandleFunc struct {
 
 //host:port/auth_prefix/prefix/path
 var routerss = []ginHandleFunc{
-	ginHandleFunc{
+	{
 		handler:  IndexHandler,
 		needAuth: false,
 		method:   "GET",
 		path:     "/",
 	},
-	ginHandleFunc{
+	{
 		handler:  LoginHandler,
 		needAuth: false,
 		method:   "POST",
 		path:     "/login",
+	},
+	{
+		handler:  TodoListHandler,
+		needAuth: false,
+		method:   "GET",
+		path:     "/todo/list",
 	},
 }
 
