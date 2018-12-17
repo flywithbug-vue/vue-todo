@@ -23,5 +23,5 @@ else
 fi
 
 git add .
-git commit -m "$dif"
+git commit -m "${dif}"
 git push -u origin master
