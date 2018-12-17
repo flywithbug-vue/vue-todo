@@ -27,19 +27,44 @@ func AddTodoHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	title := c.PostForm("title")
-	if title == "" {
-		log4go.Info("title can not be nil")
-		aRes.SetErrorInfo(http.StatusInternalServerError, "title can not be nil")
+	todo := new(model.Todo)
+	err := c.BindJSON(&todo)
+	if err != nil {
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	todo := new(model.Todo)
-	todo.Title = title
-	err := model.InsertTodo(todo)
+	if todo.Title == "" {
+		aRes.SetErrorInfo(http.StatusBadRequest, "title can not be nil")
+		return
+	}
+	err = model.InsertTodo(todo)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, err.Error())
 		return
 	}
 	aRes.AddResponseInfo("todo", todo)
+}
+
+func DeleteTodoHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(http.StatusOK, aRes)
+	}()
+	todo := new(model.Todo)
+	err := c.BindJSON(&todo)
+	if err != nil {
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		return
+	}
+	if todo.Id == 0 {
+		aRes.SetErrorInfo(http.StatusBadRequest, "id can not be nil")
+		return
+	}
+	err = todo.Remove(todo.Id)
+	if err != nil {
+		aRes.SetErrorInfo(http.StatusBadRequest, err.Error())
+		return
+	}
+	aRes.SetSuccessInfo(http.StatusOK, "success")
 }

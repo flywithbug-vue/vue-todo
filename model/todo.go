@@ -15,11 +15,12 @@ const (
 )
 
 type Todo struct {
-	Id        int64  `json:"_id" bson:"_id"`
+	Id        int64  `json:"id" bson:"_id"`
 	Title     string `json:"title" bson:"title"`
 	Completed bool   `json:"completed" bson:"completed"`
 	UpdatedAt int64  `json:"updated_at" bson:"updated_at"`
 	CreatedAt int64  `json:"created_at" bson:"created_at"`
+	Destroy   bool   `json:"destroy,omitempty" bson:"destroy,omitempty"`
 }
 
 func InsertTodo(t *Todo) error {
@@ -28,6 +29,7 @@ func InsertTodo(t *Todo) error {
 		log4go.Error(err.Error())
 		return err
 	}
+	t.Completed = false
 	t.CreatedAt = time.Now().Unix()
 	t.UpdatedAt = t.CreatedAt
 	t.Id = incrementId
@@ -36,7 +38,7 @@ func InsertTodo(t *Todo) error {
 
 func FindAllTodos() ([]Todo, error) {
 	var results []Todo
-	err := mongo.FindAll(db, todoCollection, nil, nil, &results)
+	err := mongo.FindAll(db, todoCollection, bson.M{"destroy": false}, nil, &results)
 	return results, err
 }
 
@@ -44,4 +46,8 @@ func FindTodoById(id int64) (*Todo, error) {
 	todo := new(Todo)
 	err := mongo.FindOne(db, todoCollection, bson.M{"_id": id}, nil, todo)
 	return todo, err
+}
+
+func (t *Todo) Remove(id int64) error {
+	return mongo.Remove(db, todoCollection, bson.M{"_id": id})
 }

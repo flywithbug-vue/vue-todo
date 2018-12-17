@@ -1,6 +1,7 @@
 package model
 
 import (
+	"encoding/json"
 	"fmt"
 	"testing"
 	"todo-go/core/mongo"
@@ -20,8 +21,8 @@ func TestTodo(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-
-	fmt.Println(todos)
+	tJson, _ := json.Marshal(todos)
+	fmt.Println(string(tJson))
 
 	//todo, err = FindTodoById(2)
 	//if err != nil {

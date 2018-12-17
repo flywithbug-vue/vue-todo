@@ -14,7 +14,7 @@ func LoginHandler(ctx *gin.Context) {
 	defer func() {
 		ctx.JSON(http.StatusOK, aRes)
 	}()
-	login := parameterModel{}
+	login := parameterLoginModel{}
 	err := ctx.BindJSON(&login)
 	if err != nil {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
