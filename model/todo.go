@@ -62,8 +62,11 @@ func (t *Todo) Remove() error {
 	if t.Id == 0 {
 		return errors.New("item id can not be 0")
 	}
-	t.UpdatedAt = time.Now().Unix()
 	return mongo.Remove(db, todoCollection, bson.M{"_id": t.Id})
+}
+
+func RemoveAllCompletedItems()(error {
+	return mongo.RemoveAll(db, todoCollection, bson.M{"completed": true})
 }
 
 func (t *Todo) DestroyT() error {

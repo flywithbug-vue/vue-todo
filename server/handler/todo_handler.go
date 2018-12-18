@@ -95,7 +95,7 @@ func DeleteTodoHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "id can not be nil")
 		return
 	}
-	err = todo.DestroyT()
+	err = todo.Remove()
 	if err != nil {
 		aRes.SetErrorInfo(http.StatusNotFound, err.Error())
 		return
@@ -151,7 +151,7 @@ func DestroyCompletedItemsHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(aRes.Code, aRes)
 	}()
-	err := model.DestroyCompletedItems()
+	_, err := model.RemoveAllCompletedItems()
 	if err != nil {
 		aRes.SetErrorInfo(http.StatusInternalServerError, err.Error())
 		return

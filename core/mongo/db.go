@@ -59,6 +59,12 @@ func Remove(db, collection string, selector interface{}) error {
 	defer ms.Close()
 	return c.Remove(selector)
 }
+func RemoveAll(db, collection string, selector interface{}) error {
+	ms, c := connect(db, collection)
+	defer ms.Close()
+	_, err := c.RemoveAll(selector)
+	return err
+}
 
 /*
 selector := bson.M{"name": "Tom"}
