@@ -22,6 +22,7 @@ type Todo struct {
 	UpdatedAt int64  `json:"updated_at,omitempty" bson:"updated_at"`
 	CreatedAt int64  `json:"created_at,omitempty" bson:"created_at"`
 	Destroy   bool   `json:"destroy,omitempty" bson:"destroy"`
+	UserId    bool   `json:"user_id,omitempty" bson:"user_id,omitempty"`
 }
 
 func InsertTodo(t *Todo) error {
@@ -85,6 +86,16 @@ func CheckAllTodoItems(complete bool) error {
 	updatedAt := time.Now().Unix()
 	selector := bson.M{"completed": !complete, "destroy": false}
 	data := bson.M{"$set": bson.M{"completed": complete, "updated_at": updatedAt}}
-	_, err := mongo.UpdateAll(db, todoCollection, selector, data)
+	changeInfo, err := mongo.UpdateAll(db, todoCollection, selector, data)
+	log4go.Info("Updated:%d", changeInfo.Updated)
+	return err
+}
+
+func DestroyCompletedItems() error {
+	updatedAt := time.Now().Unix()
+	selector := bson.M{"completed": true}
+	data := bson.M{"$set": bson.M{"destroy": true, "updated_at": updatedAt}}
+	changeInfo, err := mongo.UpdateAll(db, todoCollection, selector, data)
+	log4go.Info("Updated: %d", changeInfo.Updated)
 	return err
 }

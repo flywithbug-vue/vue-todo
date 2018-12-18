@@ -7,116 +7,125 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type State int
+
+const (
+	routerTypeNormal State = iota
+	routerTypeNeedAuth
+)
+
 type ginHandleFunc struct {
-	handler  gin.HandlerFunc
-	needAuth bool
-	method   string
-	path     string
+	handler    gin.HandlerFunc
+	routerType State
+	method     string
+	route      string
 }
 
 //host:port/auth_prefix/prefix/path
-
 func RegisterRouters(r *gin.Engine, prefix string, authPrefix string) {
 	jwtR := r.Group(prefix + authPrefix)
 	jwtR.Use(middleware.JWTAuthMiddleware())
 	for _, v := range routers {
-		path := strings.ToLower(v.path)
-		if !v.needAuth {
-			path = strings.ToLower(prefix + v.path)
+		route := strings.ToLower(v.route)
+		switch v.routerType {
+		case routerTypeNeedAuth:
+			route = strings.ToLower(prefix + v.route)
+			funcDoRouteNeedAuthRegister(strings.ToUpper(v.method), strings.ToLower(route), v.handler, jwtR)
+		case routerTypeNormal:
+			funcDoRouteRegister(strings.ToUpper(v.method), strings.ToLower(route), v.handler, r)
 		}
-		funcDoRouteRegister(v.needAuth, strings.ToUpper(v.method), path, v.handler, r, jwtR)
 	}
 }
 
-func funcDoRouteRegister(needAuth bool, method, route string, handler gin.HandlerFunc, r *gin.Engine, jwt_r *gin.RouterGroup) {
-	//log4go.Info("%!d %s %s %s",needAuth,method,route,jwt_r.BasePath())
+//使用jwt过滤的routerType==routerTypeNeedAuth
+func funcDoRouteNeedAuthRegister(method, route string, handler gin.HandlerFunc, jwtR *gin.RouterGroup) {
 	switch method {
 	case "POST":
-		if needAuth {
-			jwt_r.POST(route, handler)
-		} else {
-			r.POST(route, handler)
-		}
+		jwtR.POST(route, handler)
 	case "PUT":
-		if needAuth {
-			jwt_r.PUT(route, handler)
-		} else {
-			r.PUT(route, handler)
-		}
+		jwtR.PUT(route, handler)
 	case "HEAD":
-		if needAuth {
-			jwt_r.HEAD(route, handler)
-		} else {
-			r.HEAD(route, handler)
-		}
+		jwtR.HEAD(route, handler)
 	case "DELETE":
-		if needAuth {
-			jwt_r.DELETE(route, handler)
-		} else {
-			r.DELETE(route, handler)
-		}
+		jwtR.DELETE(route, handler)
 	case "OPTIONS":
-		if needAuth {
-			jwt_r.OPTIONS(route, handler)
-		} else {
-			r.OPTIONS(route, handler)
-		}
+		jwtR.OPTIONS(route, handler)
 	default:
-		if needAuth {
-			jwt_r.GET(route, handler)
-		} else {
-			r.GET(route, handler)
-		}
+		jwtR.GET(route, handler)
+	}
+}
+
+//普通routerType==routerTypeNormal
+func funcDoRouteRegister(method, route string, handler gin.HandlerFunc, r *gin.Engine) {
+	switch method {
+	case "POST":
+		r.POST(route, handler)
+	case "PUT":
+		r.PUT(route, handler)
+	case "HEAD":
+		r.HEAD(route, handler)
+	case "DELETE":
+		r.DELETE(route, handler)
+	case "OPTIONS":
+		r.OPTIONS(route, handler)
+	default:
+		r.GET(route, handler)
 	}
 }
 
 var routers = []ginHandleFunc{
 	{
-		handler:  IndexHandler,
-		needAuth: false,
-		method:   "GET",
-		path:     "/",
+		handler:    IndexHandler,
+		routerType: routerTypeNormal,
+		method:     "GET",
+		route:      "/",
 	},
 	{
-		handler:  LoginHandler,
-		needAuth: false,
-		method:   "POST",
-		path:     "/login",
+		handler:    LoginHandler,
+		routerType: routerTypeNormal,
+		method:     "POST",
+		route:      "/login",
 	},
 	{
-		handler:  TodoListHandler,
-		needAuth: false,
-		method:   "GET",
-		path:     "/todo/list",
+		handler:    TodoListHandler,
+		routerType: routerTypeNormal,
+		method:     "GET",
+		route:      "/todo/list",
 	},
 	{
-		handler:  AddTodoHandler,
-		needAuth: false,
-		method:   "POST",
-		path:     "/todo/add",
+		handler:    AddTodoHandler,
+		routerType: routerTypeNormal,
+		method:     "POST",
+		route:      "/todo/add",
 	},
 	{
-		handler:  DeleteTodoHandler,
-		needAuth: false,
-		method:   "POST",
-		path:     "/todo/delete/:id",
+		handler:    DeleteTodoHandler,
+		routerType: routerTypeNormal,
+		method:     "POST",
+		route:      "/todo/delete/:id",
 	},
 	{
-		handler:  GetTodoHandler,
-		needAuth: false,
-		method:   "GET",
-		path:     "/todo/item/:id",
+		handler:    GetTodoHandler,
+		routerType: routerTypeNormal,
+		method:     "GET",
+		route:      "/todo/item/:id",
 	},
 	{
-		handler:  UpdateTodoHandler,
-		needAuth: false,
-		method:   "POST",
-		path:     "/todo/item",
+		handler:    UpdateTodoHandler,
+		routerType: routerTypeNormal,
+		method:     "POST",
+		route:      "/todo/item",
 	},
 	{
-		handler:  CheckAllTodoHandler,
-		needAuth: false,
-		method:   "POST",
-		path:     "/todo/check",
+		handler:    CheckAllTodoHandler,
+		routerType: routerTypeNormal,
+		method:     "POST",
+		route:      "/todo/check",
+	},
+	{
+		handler:    DestroyCompletedItemsHandler,
+		routerType: routerTypeNormal,
+		method:     "POST",
+		route:      "/todo/destroy",
 	},
 }

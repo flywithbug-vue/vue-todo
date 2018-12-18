@@ -145,3 +145,16 @@ func CheckAllTodoHandler(c *gin.Context) {
 	}
 	aRes.SetSuccessInfo(http.StatusOK, "success")
 }
+
+func DestroyCompletedItemsHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(aRes.Code, aRes)
+	}()
+	err := model.DestroyCompletedItems()
+	if err != nil {
+		aRes.SetErrorInfo(http.StatusInternalServerError, err.Error())
+		return
+	}
+	aRes.SetSuccessInfo(http.StatusOK, "success")
+}
