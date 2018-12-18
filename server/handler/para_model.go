@@ -6,6 +6,7 @@ type parameterLoginModel struct {
 }
 
 type parameterTodoModel struct {
-	Id    int64  `json:"id""`
-	Title string `json:"title"`
+	Id        int64  `json:"id""`
+	Title     string `json:"title"`
+	Completed string `json:"completed"`
 }

@@ -133,14 +133,14 @@ func CheckAllTodoHandler(c *gin.Context) {
 		c.JSON(aRes.Code, aRes)
 	}()
 	todo := new(model.Todo)
-	err := c.ShouldBindJSON(&todo)
+	err := c.BindJSON(&todo)
 	if err != nil {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid:"+err.Error())
 		return
 	}
 	err = model.CheckAllTodoItems(todo.Completed)
 	if err != nil {
-		aRes.SetErrorInfo(http.StatusInternalServerError, "para invalid:"+err.Error())
+		aRes.SetErrorInfo(http.StatusInternalServerError, err.Error())
 		return
 	}
 	aRes.SetSuccessInfo(http.StatusOK, "success")

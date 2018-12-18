@@ -107,7 +107,8 @@ export const store = new Vuex.Store({
     },
     checkAll(context,checked) {
       axios.post('/todo/check',{
-        completed:checked
+        title:"title",
+        completed:checked,
       }).then(() => {
         context.commit('checkAll',checked)
       }).catch(error => {

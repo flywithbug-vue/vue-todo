@@ -82,6 +82,9 @@ func (t *Todo) Update() error {
 }
 
 func CheckAllTodoItems(complete bool) error {
-	updateAt := time.Now().Unix()
-	return mongo.Update(db, todoCollection, bson.M{"complete": !complete}, bson.M{"$set": bson.M{"complete": complete, "updated_at": updateAt}})
+	updatedAt := time.Now().Unix()
+	selector := bson.M{"completed": !complete, "destroy": false}
+	data := bson.M{"$set": bson.M{"completed": complete, "updated_at": updatedAt}}
+	_, err := mongo.UpdateAll(db, todoCollection, selector, data)
+	return err
 }

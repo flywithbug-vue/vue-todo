@@ -79,10 +79,6 @@ export default {
       if (this.title.trim() == '') {
         this.title = this.beforeEditCache;
       }
-      if (this.title == this.beforeEditCache){
-        return
-      }
-      this.beforeEditCache = this.title
       this.$store.dispatch('updateTodo',{
         'id': this.id,
         'title': this.title,

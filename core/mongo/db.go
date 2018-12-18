@@ -59,3 +59,14 @@ func Remove(db, collection string, selector interface{}) error {
 	defer ms.Close()
 	return c.Remove(selector)
 }
+
+/*
+selector := bson.M{"name": "Tom"}
+data := bson.M{"$set": bson.M{"age": 22}}
+*/
+func UpdateAll(db, collection string, selector, data interface{}) (*mgo.ChangeInfo, error) {
+	ms, c := connect(db, collection)
+	defer ms.Close()
+	changInfo, err := c.UpdateAll(selector, data)
+	return changInfo, err
+}
