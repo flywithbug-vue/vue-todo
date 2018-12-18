@@ -29,10 +29,10 @@ func RegisterRouters(r *gin.Engine, prefix string, authPrefix string) {
 		route := strings.ToLower(v.route)
 		switch v.routerType {
 		case routerTypeNeedAuth:
-			route = strings.ToLower(prefix + v.route)
-			funcDoRouteNeedAuthRegister(strings.ToUpper(v.method), strings.ToLower(route), v.handler, jwtR)
+			funcDoRouteNeedAuthRegister(strings.ToUpper(v.method), route, v.handler, jwtR)
 		case routerTypeNormal:
-			funcDoRouteRegister(strings.ToUpper(v.method), strings.ToLower(route), v.handler, r)
+			route = strings.ToLower(prefix + route)
+			funcDoRouteRegister(strings.ToUpper(v.method), route, v.handler, r)
 		}
 	}
 }

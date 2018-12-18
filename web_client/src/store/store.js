@@ -115,7 +115,11 @@ export const store = new Vuex.Store({
       })
     },
     clearCompleted(context) {
-      context.commit('clearCompleted')
+      axios.post("/todo/destroy").then(() => {
+        context.commit('clearCompleted')
+      }).catch(error => {
+        console.log(error)
+      })
     },
   }
 })

@@ -17,7 +17,7 @@ const (
 
 type Todo struct {
 	Id        int64  `json:"id" bson:"_id"`
-	Title     string `json:"title" bson:"title"`
+	Title     string `json:"title" bson:"title,omitempty"`
 	Completed bool   `json:"completed" bson:"completed"`
 	UpdatedAt int64  `json:"updated_at,omitempty" bson:"updated_at"`
 	CreatedAt int64  `json:"created_at,omitempty" bson:"created_at"`
@@ -79,7 +79,7 @@ func (t *Todo) Update() error {
 		return errors.New("item id can not be 0")
 	}
 	t.UpdatedAt = time.Now().Unix()
-	return mongo.Update(db, todoCollection, bson.M{"_id": t.Id}, t)
+	return mongo.Update(db, todoCollection, bson.M{"_id": t.Id}, bson.M{"$set": bson.M{"title": t.Title, "completed": t.Completed, "updated_at": t.UpdatedAt}})
 }
 
 func CheckAllTodoItems(complete bool) error {
