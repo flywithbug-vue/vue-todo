@@ -151,7 +151,7 @@ func DestroyCompletedItemsHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(aRes.Code, aRes)
 	}()
-	_, err := model.RemoveAllCompletedItems()
+	err := model.RemoveAllCompletedItems()
 	if err != nil {
 		aRes.SetErrorInfo(http.StatusInternalServerError, err.Error())
 		return

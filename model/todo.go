@@ -65,7 +65,7 @@ func (t *Todo) Remove() error {
 	return mongo.Remove(db, todoCollection, bson.M{"_id": t.Id})
 }
 
-func RemoveAllCompletedItems()(error {
+func RemoveAllCompletedItems() error {
 	return mongo.RemoveAll(db, todoCollection, bson.M{"completed": true})
 }
 
