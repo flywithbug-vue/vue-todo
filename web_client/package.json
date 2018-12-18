@@ -11,10 +11,10 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "firebase": "^5.7.0",
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0",
     "vue": "^2.5.19",
+    "vue-router": "^3.0.2",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
