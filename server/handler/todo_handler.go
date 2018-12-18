@@ -12,7 +12,7 @@ import (
 func TodoListHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(http.StatusOK, aRes)
+		c.JSON(aRes.Code, aRes)
 	}()
 	todos, err := model.FindAllTodos()
 	if err != nil {
@@ -26,7 +26,7 @@ func TodoListHandler(c *gin.Context) {
 func AddTodoHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(http.StatusOK, aRes)
+		c.JSON(aRes.Code, aRes)
 	}()
 	todo := new(model.Todo)
 	err := c.BindJSON(&todo)
@@ -50,7 +50,7 @@ func AddTodoHandler(c *gin.Context) {
 func UpdateTodoHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(http.StatusOK, aRes)
+		c.JSON(aRes.Code, aRes)
 	}()
 	todo := new(model.Todo)
 	err := c.BindJSON(&todo)
@@ -77,7 +77,7 @@ func UpdateTodoHandler(c *gin.Context) {
 func DeleteTodoHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(http.StatusOK, aRes)
+		c.JSON(aRes.Code, aRes)
 	}()
 	parId := c.Param("id")
 	if parId == "" {
@@ -106,7 +106,7 @@ func DeleteTodoHandler(c *gin.Context) {
 func GetTodoHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(http.StatusOK, aRes)
+		c.JSON(aRes.Code, aRes)
 	}()
 
 	parId := c.Param("id")
@@ -125,4 +125,23 @@ func GetTodoHandler(c *gin.Context) {
 		return
 	}
 	aRes.AddResponseInfo("todo", todo)
+}
+
+func CheckAllTodoHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(aRes.Code, aRes)
+	}()
+	todo := new(model.Todo)
+	err := c.ShouldBindJSON(&todo)
+	if err != nil {
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid:"+err.Error())
+		return
+	}
+	err = model.CheckAllTodoItems(todo.Completed)
+	if err != nil {
+		aRes.SetErrorInfo(http.StatusInternalServerError, "para invalid:"+err.Error())
+		return
+	}
+	aRes.SetSuccessInfo(http.StatusOK, "success")
 }

@@ -84,8 +84,15 @@ export const store = new Vuex.Store({
         console.log(error)
       })
     },
+    deleteTodo(context, id) {
+      axios.post('/todo/delete/' + id).then(() => {
+        context.commit('deleteTodo',id)
+      }).catch(error => {
+        console.log(error)
+      })
+    },
     updateTodo(context, todo){
-      axios.put('/todo/item',{
+      axios.post('/todo/item',{
         id:todo.id,
         title:todo.title,
         completed:todo.completed
@@ -97,14 +104,12 @@ export const store = new Vuex.Store({
     },
     updateFilter(context,filter) {
       context.commit('updateFilter',filter)
-
     },
     checkAll(context,checked) {
-      context.commit('checkAll',checked)
-    },
-    deleteTodo(context, id) {
-      axios.post('/todo/delete/' + id).then(() => {
-        context.commit('deleteTodo',id)
+      axios.post('/todo/check',{
+        completed:checked
+      }).then(() => {
+        context.commit('checkAll',checked)
       }).catch(error => {
         console.log(error)
       })

@@ -80,3 +80,8 @@ func (t *Todo) Update() error {
 	t.UpdatedAt = time.Now().Unix()
 	return mongo.Update(db, todoCollection, bson.M{"_id": t.Id}, t)
 }
+
+func CheckAllTodoItems(complete bool) error {
+	updateAt := time.Now().Unix()
+	return mongo.Update(db, todoCollection, bson.M{"complete": !complete}, bson.M{"$set": bson.M{"complete": complete, "updated_at": updateAt}})
+}

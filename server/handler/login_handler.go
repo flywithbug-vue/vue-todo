@@ -12,7 +12,7 @@ import (
 func LoginHandler(ctx *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		ctx.JSON(http.StatusOK, aRes)
+		ctx.JSON(aRes.Code, aRes)
 	}()
 	login := parameterLoginModel{}
 	err := ctx.BindJSON(&login)
