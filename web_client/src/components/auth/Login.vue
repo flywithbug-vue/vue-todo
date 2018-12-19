@@ -28,9 +28,11 @@
       },
       methods: {
           login() {
-            this.$store.dispatch('loginAuth',{
+            this.$store.dispatch('retrieveToken',{
               account:this.account,
               password:this.password,
+            }).then(response => {
+              this.$router.push({name: 'todo'})
             })
           }
       }

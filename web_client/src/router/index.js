@@ -38,8 +38,8 @@ export default new Router({
       component:Register
     },
     {
-      path:'/todo/:id',
-      name:'todo',
+      path:'/todo/item/:id',
+      name:'item',
       component:TestTodosVariable
     }
   ],
