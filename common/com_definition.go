@@ -1,7 +1,7 @@
 package common
 
 const (
-	KeyUserToken = "Token"
+	KeyUserToken = "Access_token"
 	KeyJWTClaims = "_key_jwt_Claims"
 	KeyUserId    = "user_id"
 	KeyUserAgent = "User-Agent"

@@ -13,6 +13,11 @@ import (
 	"github.com/flywithbug/log4go"
 )
 
+const (
+	notBeforeDuration = 1000
+	expiresOffset     = 3600 * 24 * 7
+)
+
 var jwtAuthBackend *jAuthenticationBackend
 
 func jAuthKey() *jAuthenticationBackend {
@@ -27,11 +32,6 @@ func ReadSigningKey(privatePath, publicPath string) {
 	jAuthKey().privateKey = getPrivateKey(privatePath)
 	jAuthKey().PublicKey = getPublicKey(publicPath)
 }
-
-const (
-	notBeforeDuration = 1000
-	expiresOffset     = 20
-)
 
 type jAuthenticationBackend struct {
 	privateKey *rsa.PrivateKey

@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+//JWTAuthMiddleware
 func JWTAuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		aRes := model.NewResponse()

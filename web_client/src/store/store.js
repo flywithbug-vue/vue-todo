@@ -67,6 +67,17 @@ export const store = new Vuex.Store({
     },
   },
   actions: {
+    loginAuth(context, credentials) {
+      axios.post('/login',{
+        account:credentials.account,
+        password:credentials.password,
+      }).then(response => {
+        const token = response.data.data.token
+        localStorage.setItem("access_token",token)
+      }).catch(error => {
+        console.log(error)
+      })
+    },
     retrieveTodos(context) {
       axios.get('/todo/list').then(response => {
         context.commit('retrieveTodos',response.data.data.list)

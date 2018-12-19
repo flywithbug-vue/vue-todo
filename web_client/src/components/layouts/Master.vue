@@ -6,7 +6,6 @@
         <li><router-link :to="{name: 'about'}">About</router-link></li>
         <li><router-link :to="{name: 'login'}">Login</router-link></li>
         <li><router-link :to="{name: 'register'}">Register</router-link></li>
-
       </ul>
       <router-view></router-view>
     </div>
@@ -57,6 +56,7 @@ export default {
     text-decoration: none;
     text-transform: uppercase;
   }
+
 
 
 </style>
