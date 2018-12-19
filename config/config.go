@@ -2,8 +2,9 @@ package config
 
 import (
 	"encoding/json"
-	"gopkg.in/gomail.v2"
 	"io/ioutil"
+
+	"gopkg.in/gomail.v2"
 )
 
 var config *Config
@@ -64,19 +65,19 @@ func ReadConfig(path string) error {
 /*
 解析配置文件
 */
-func (this *Config) Parse(path string) error {
+func (c *Config) Parse(path string) error {
 	file, err := ioutil.ReadFile(path)
 	if err != nil {
 		return err
 	}
-	err = json.Unmarshal(file, &this)
+	err = json.Unmarshal(file, &c)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (this *MailConfig) Dialer() (*gomail.Dialer, error) {
-	d := gomail.NewDialer(this.Host, this.Port, this.Username, this.Password)
+func (c *MailConfig) Dialer() (*gomail.Dialer, error) {
+	d := gomail.NewDialer(c.Host, c.Port, c.Username, c.Password)
 	return d, nil
 }

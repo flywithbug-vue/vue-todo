@@ -94,6 +94,12 @@ var routers = []ginHandleFunc{
 	},
 	{
 		handler:    TodoListHandler,
+		routerType: routerTypeNeedAuth,
+		method:     "GET",
+		route:      "/todo/list1",
+	},
+	{
+		handler:    TodoListHandler,
 		routerType: routerTypeNormal,
 		method:     "GET",
 		route:      "/todo/list",
