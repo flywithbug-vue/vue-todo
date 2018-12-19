@@ -30,7 +30,7 @@ func ReadSigningKey(privatePath, publicPath string) {
 
 const (
 	notBeforeDuration = 1000
-	expiresOffset     = 3600 * 24 * 7
+	expiresOffset     = 20
 )
 
 type jAuthenticationBackend struct {
@@ -40,10 +40,10 @@ type jAuthenticationBackend struct {
 
 // 一些常量
 var (
-	tokenExpired     = errors.New("token is expired")
-	tokenNotValidYet = errors.New("token not active yet")
-	tokenMalformed   = errors.New("that's not even a token")
-	tokenInvalid     = errors.New("couldn't handle this token")
+	TokenExpired     = errors.New("token is expired")
+	TokenNotValidYet = errors.New("token not active yet")
+	TokenMalformed   = errors.New("that's not even a token")
+	TokenInvalid     = errors.New("couldn't handle this token")
 )
 
 //自定义载荷
@@ -51,6 +51,7 @@ type CustomClaims struct {
 	jwt.StandardClaims
 	ID      string `json:"user_id"`
 	Account string `json:"account"`
+	Token   string `json:"token"`
 }
 
 //创建claims
@@ -86,21 +87,21 @@ func ParseToken(tokenString string) (*CustomClaims, error) {
 	if err != nil {
 		if ve, ok := err.(*jwt.ValidationError); ok {
 			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
-				return nil, tokenMalformed
+				return nil, TokenMalformed
 			} else if ve.Errors&jwt.ValidationErrorExpired != 0 {
 				// Token is expired
-				return nil, tokenExpired
+				return nil, TokenExpired
 			} else if ve.Errors&jwt.ValidationErrorNotValidYet != 0 {
-				return nil, tokenNotValidYet
+				return nil, TokenNotValidYet
 			} else {
-				return nil, tokenInvalid
+				return nil, TokenInvalid
 			}
 		}
 	}
 	if claims, ok := token.Claims.(*CustomClaims); ok && token.Valid {
 		return claims, nil
 	}
-	return nil, tokenInvalid
+	return nil, TokenInvalid
 }
 
 func RefreshToken(tokenString string) (string, error) {
@@ -118,7 +119,7 @@ func RefreshToken(tokenString string) (string, error) {
 		claims.StandardClaims.ExpiresAt = time.Now().Add(2 * 24 * time.Hour).Unix()
 		return GenerateToken(*claims)
 	}
-	return "", tokenInvalid
+	return "", TokenInvalid
 }
 
 func getPrivateKey(path string) *rsa.PrivateKey {

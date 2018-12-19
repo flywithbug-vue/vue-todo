@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"todo-go/common"
 	"todo-go/core/jwt"
 	"todo-go/model"
 
@@ -28,6 +29,13 @@ func LoginHandler(c *gin.Context) {
 	}
 	claims := jwt.NewCustomClaims(user.UserId, user.Account)
 	token, err := jwt.GenerateToken(claims)
+	if err != nil {
+		log.Error(err.Error())
+		aRes.SetErrorInfo(http.StatusUnauthorized, "token generate error"+err.Error())
+		return
+	}
+	userAg := c.GetHeader(common.KeyUserAgent)
+	_, err = model.UserLogin(user.UserId, userAg, token, c.ClientIP())
 	if err != nil {
 		log.Error(err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "token generate error"+err.Error())

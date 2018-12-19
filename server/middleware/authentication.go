@@ -1,11 +1,12 @@
 package middleware
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"todo-go/common"
 	"todo-go/core/jwt"
 	"todo-go/model"
+
+	"github.com/gin-gonic/gin"
 )
 
 func JWTAuthMiddleware() gin.HandlerFunc {
@@ -18,8 +19,22 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
+		l, err := model.FindLoginByToken(token)
+		if err != nil {
+			aRes.SetErrorInfo(http.StatusUnauthorized, "未查询到Token，无权限访问")
+			c.JSON(http.StatusUnauthorized, aRes)
+			c.Abort()
+			return
+		}
+		if l.Status != 1 {
+			aRes.SetErrorInfo(http.StatusUnauthorized, "授权已失效")
+			c.JSON(http.StatusUnauthorized, aRes)
+			c.Abort()
+			return
+		}
 		claims, err := jwt.ParseToken(token)
 		if err != nil {
+			model.UpdateLoginStatus(token, 0)
 			if err == jwt.TokenExpired {
 				aRes.SetErrorInfo(http.StatusUnauthorized, "授权已过期")
 				c.JSON(http.StatusUnauthorized, aRes)
