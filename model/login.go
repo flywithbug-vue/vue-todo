@@ -8,9 +8,12 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+type state int
+
 const (
-	STATUS_LOGIN    = 1
-	STATUS_LOGOUT   = 2
+	//StatusNormal    = 0
+	StatusLogin     = 1
+	StatusLogout    = 2
 	loginCollection = "login"
 )
 
@@ -19,7 +22,7 @@ type Login struct {
 	Token      string `bson:"token"`       // 用户TOKEN
 	CreateTime int64  `bson:"create_time"` // 登录日期
 	LoginIp    string `bson:"login_ip"`    // 登录IP
-	Status     int    `bson:"status"`      //status 1 已登录，0表示退出登录
+	Status     state  `bson:"status"`      //status 1 已登录，2表示退出登录
 	Forbidden  bool   `bson:"forbidden"`   //false 表示未禁言
 	userAgent  string `bson:"user_agent"`  //用户UA
 	UpdatedAt  int64  `json:"updated_at,omitempty" bson:"updated_at"`
@@ -32,7 +35,7 @@ func UserLogin(userId, userAgent, token, ip string) (l *Login, err error) {
 	l.Token = token
 	l.CreateTime = time.Now().Unix()
 	l.UpdatedAt = l.CreateTime
-	l.Status = 1
+	l.Status = StatusLogin
 	l.LoginIp = ip
 	err = l.Insert()
 	return
@@ -44,7 +47,7 @@ func (l Login) FindAll() ([]Login, error) {
 	return results, err
 }
 
-func (l Login) Insert() error {
+func (l *Login) Insert() error {
 	if l.UserId == "" {
 		return errors.New("user_id can not be nil")
 	}

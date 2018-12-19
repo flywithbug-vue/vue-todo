@@ -12,6 +12,9 @@ export const store = new Vuex.Store({
     token:localStorage.getItem("access_token")|| null,
   },
   getters: {
+    loggedIn(state) {
+      return state.token != null
+    },
     remaining(state) {
       return state.todos.filter(todo => !todo.completed).length;
     },
@@ -68,10 +71,16 @@ export const store = new Vuex.Store({
     },
     retrieveToken(state,token) {
       state.token =  token
+    },
+    clearTodos(state) {
+      state.todos = []
     }
   },
   actions: {
-    retrieveToken(context, credentials)  {
+    clearTodos(context) {
+      context.commit('clearTodos')
+    },
+    retrieveToken(context, credentials) {
       return new Promise((resolve, reject) =>{
         axios.post('/login',{
           account:credentials.account,

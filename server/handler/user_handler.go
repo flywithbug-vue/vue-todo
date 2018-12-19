@@ -74,3 +74,21 @@ func RegisterHandler(c *gin.Context) {
 	}
 	aRes.AddResponseInfo("user", user)
 }
+
+func LogoutHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(aRes.Code, aRes)
+	}()
+	token := common.UserToken(c)
+	if token == "" {
+		aRes.SetErrorInfo(http.StatusBadRequest, "token not found")
+		return
+	}
+	err := model.UpdateLoginStatus(token, model.StatusLogout)
+	if err != nil {
+		aRes.SetErrorInfo(http.StatusBadRequest, err.Error())
+		return
+	}
+	aRes.SetSuccessInfo(http.StatusOK, "success")
+}

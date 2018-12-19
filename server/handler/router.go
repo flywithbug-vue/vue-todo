@@ -7,16 +7,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type State int
+type stateType int
 
 const (
-	routerTypeNormal State = iota
+	routerTypeNormal stateType = iota
 	routerTypeNeedAuth
 )
 
 type ginHandleFunc struct {
 	handler    gin.HandlerFunc
-	routerType State
+	routerType stateType
 	method     string
 	route      string
 }
@@ -91,6 +91,12 @@ var routers = []ginHandleFunc{
 		routerType: routerTypeNormal,
 		method:     "POST",
 		route:      "/login",
+	},
+	{
+		handler:    LogoutHandler,
+		routerType: routerTypeNeedAuth,
+		route:      "/logout",
+		method:     "POST",
 	},
 	{
 		handler:    TodoListHandler,

@@ -49,7 +49,7 @@ var (
 //自定义载荷
 type CustomClaims struct {
 	jwt.StandardClaims
-	ID      string `json:"user_id"`
+	UserId  string `json:"user_id"`
 	Account string `json:"account"`
 	Token   string `json:"token"`
 }
@@ -58,7 +58,7 @@ type CustomClaims struct {
 func NewCustomClaims(userId, account string) CustomClaims {
 	now := time.Now().Unix()
 	claims := CustomClaims{
-		ID:      userId,
+		UserId:  userId,
 		Account: account,
 		StandardClaims: jwt.StandardClaims{
 			NotBefore: int64(now - notBeforeDuration), // 	签名生效时间

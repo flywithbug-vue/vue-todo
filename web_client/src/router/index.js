@@ -6,6 +6,7 @@ import About from "../components/marketing/About";
 import Login from "../components/auth/Login";
 import Register from "../components/auth/Register";
 import TestTodosVariable from "../components/marketing/TestTodosVariable";
+import Logout from "../components/auth/Logout";
 
 
 Vue.use(Router)
@@ -31,6 +32,11 @@ export default new Router({
       path:'/login',
       name:'login',
       component:Login
+    },
+    {
+      path:'/logout',
+      name:'logout',
+      component:Logout
     },
     {
       path:'/register',
