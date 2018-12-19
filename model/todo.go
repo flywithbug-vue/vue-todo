@@ -31,6 +31,7 @@ func InsertTodo(t *Todo) error {
 		log4go.Error(err.Error())
 		return err
 	}
+	//t.Title = strings.TrimSpace(t.Title)
 	t.Completed = false
 	t.CreatedAt = time.Now().Unix()
 	t.UpdatedAt = t.CreatedAt
@@ -81,6 +82,7 @@ func (t *Todo) Update() error {
 	if t.Id == 0 {
 		return errors.New("item id can not be 0")
 	}
+	//t.Title = strings.TrimSpace(t.Title)
 	t.UpdatedAt = time.Now().Unix()
 	return mongo.Update(db, todoCollection, bson.M{"_id": t.Id}, bson.M{"$set": bson.M{"title": t.Title, "completed": t.Completed, "updated_at": t.UpdatedAt}})
 }

@@ -11,7 +11,7 @@
       <input v-else
              class="todo-item-edit"
              type="text"
-             v-model="title"
+             v-model.trim="title"
              @blur="doneEdit"
              @keyup.enter="doneEdit"
              @keyup.esc="cancelEdit" v-focus>
