@@ -54,18 +54,6 @@ func Update(db, collection string, selector, update interface{}) error {
 	return c.Update(selector, update)
 }
 
-func Remove(db, collection string, selector interface{}) error {
-	ms, c := connect(db, collection)
-	defer ms.Close()
-	return c.Remove(selector)
-}
-func RemoveAll(db, collection string, selector interface{}) error {
-	ms, c := connect(db, collection)
-	defer ms.Close()
-	_, err := c.RemoveAll(selector)
-	return err
-}
-
 /*
 selector := bson.M{"name": "Tom"}
 data := bson.M{"$set": bson.M{"age": 22}}
@@ -75,4 +63,17 @@ func UpdateAll(db, collection string, selector, data interface{}) (*mgo.ChangeIn
 	defer ms.Close()
 	changInfo, err := c.UpdateAll(selector, data)
 	return changInfo, err
+}
+
+func Remove(db, collection string, selector interface{}) error {
+	ms, c := connect(db, collection)
+	defer ms.Close()
+	return c.Remove(selector)
+}
+
+func RemoveAll(db, collection string, selector interface{}) error {
+	ms, c := connect(db, collection)
+	defer ms.Close()
+	_, err := c.RemoveAll(selector)
+	return err
 }

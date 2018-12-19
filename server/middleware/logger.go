@@ -3,11 +3,11 @@ package middleware
 import (
 	"encoding/base64"
 	"encoding/binary"
+	"encoding/json"
 	"time"
 
 	log "github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/json"
 )
 
 func Logger(notlogged ...string) gin.HandlerFunc {

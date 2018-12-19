@@ -45,12 +45,6 @@
 			"revisionTime": "2018-12-17T00:13:07Z"
 		},
 		{
-			"checksumSHA1": "woO1qIxIeQ1bcbPSiMfAKk3r4xg=",
-			"path": "github.com/gin-gonic/gin/json",
-			"revision": "caf3e350a548af1add9def68087ac53d1d000caa",
-			"revisionTime": "2018-05-31T06:13:40Z"
-		},
-		{
 			"checksumSHA1": "afLqBfX9SeIP6eeTZb3WwdTFaOo=",
 			"path": "github.com/gin-gonic/gin/render",
 			"revision": "1542eff27f7d67ef56543358e2f623eb4ea8adf9",
@@ -67,6 +61,12 @@
 			"path": "github.com/mattn/go-isatty",
 			"revision": "3fb116b820352b7f0c281308a4d6250c22d94e27",
 			"revisionTime": "2018-08-30T10:17:45Z"
+		},
+		{
+			"checksumSHA1": "zmC8/3V4ls53DJlNTKDZwPSC/dA=",
+			"path": "github.com/satori/go.uuid",
+			"revision": "5bf94b69c6b68ee1b541973bb8e1144db23a194b",
+			"revisionTime": "2017-03-21T23:07:31Z"
 		},
 		{
 			"checksumSHA1": "MAzQxLlGpnkO2tPOcQtZX9ciLRM=",

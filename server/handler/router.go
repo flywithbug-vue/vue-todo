@@ -81,6 +81,12 @@ var routers = []ginHandleFunc{
 		route:      "/",
 	},
 	{
+		handler:    RegisterHandler,
+		routerType: routerTypeNormal,
+		method:     "POST",
+		route:      "/register",
+	},
+	{
 		handler:    LoginHandler,
 		routerType: routerTypeNormal,
 		method:     "POST",

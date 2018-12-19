@@ -44,10 +44,9 @@ func (u *User) Insert() error {
 	return mongo.Insert(db, userCollection, u)
 }
 
-func CheckLogin(account, pass string) (u *User, err error) {
-	u = new(User)
+func (u *User) CheckLogin(account, pass string) (err error) {
 	err = mongo.FindOne(db, userCollection, bson.M{"account": account, "password": pass}, nil, u)
-	return u, err
+	return err
 }
 
 func (u *User) Update(id string) error {

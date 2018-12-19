@@ -5,6 +5,7 @@ import LandingPage from "../components/marketing/LandingPage";
 import About from "../components/marketing/About";
 import Login from "../components/auth/Login";
 import Register from "../components/auth/Register";
+import TestTodosVariable from "../components/marketing/TestTodosVariable";
 
 
 Vue.use(Router)
@@ -35,6 +36,12 @@ export default new Router({
       path:'/register',
       name:'register',
       component:Register
+    },
+    {
+      path:'/todo/:id',
+      name:'todo',
+      component:TestTodosVariable
     }
-  ]
+  ],
+  mode:'history'
 })

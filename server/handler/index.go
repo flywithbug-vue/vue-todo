@@ -12,8 +12,6 @@ import (
 var (
 	index = 0
 )
-var user model.User
-var login model.Login
 
 // 系统状态信息
 func IndexHandler(c *gin.Context) {
