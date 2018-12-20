@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"time"
 	"todo-go/server/handler"
 	"todo-go/server/middleware"
 
@@ -12,7 +13,15 @@ import (
 func StartApi(port string, rPrefix string, authPrefix string) {
 	r := gin.New()
 	r.Use(middleware.Logger(), gin.Recovery())
-	r.Use(cors.Default())
+	cors.Default()
+	r.Use(cors.New(cors.Config{
+		AllowAllOrigins:  true,
+		AllowMethods:     []string{"GET", "PUT", "POST", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Authorization", "Content-Type", "Content-Length"},
+		ExposeHeaders:    []string{},
+		MaxAge:           12 * time.Hour,
+		AllowCredentials: false,
+	}))
 	r.Use(middleware.CookieMiddleware())
 	handler.RegisterRouters(r, rPrefix, authPrefix)
 	err := r.Run(port)

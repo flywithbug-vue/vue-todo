@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	KeyUserToken = "Access_token"
+	KeyUserToken = "Authorization"
 	KeyJWTClaims = "_key_jwt_Claims"
 	KeyUserId    = "user_id"
 	KeyUserAgent = "User-Agent"

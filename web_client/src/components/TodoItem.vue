@@ -13,7 +13,7 @@
              type="text"
              v-model.trim="title"
              @blur="doneEdit"
-             @keyup.enter="doneEdit"
+             @keyup.enter="doneEnterEdit"
              @keyup.esc="cancelEdit" v-focus>
     </div>
     <div>
@@ -74,12 +74,22 @@ export default {
       this.beforeEditCache = this.title;
       this.editing = true;
     },
+    doneEnterEdit() {
+      this.editing = false
+      if (this.title.trim() == '') {
+        this.title = this.beforeEditCache;
+      }
+    },
     doneEdit() {
       this.editing = false
       if (this.title.trim() == '') {
         this.title = this.beforeEditCache;
       }
-      this.$store.dispatch('updateTodo',{
+      if (this.title == this.beforeEditCache){
+        return
+      }
+
+        this.$store.dispatch('updateTodo',{
         'id': this.id,
         'title': this.title,
         'completed': this.completed,

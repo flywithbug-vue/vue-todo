@@ -3,13 +3,17 @@ import Vuex from 'vuex'
 import axios from 'axios'
 
 Vue.use(Vuex)
-axios.defaults.baseURL="http://localhost:6201/api"
+let instanceAxios = axios.create({
+  baseURL: 'http://localhost:6201/api',
+  timeout: 1000,
+  headers:{'Authorization':localStorage.getItem("Authorization")}
+})
 
-export const store = new Vuex.Store({
+export const store =new Vuex.Store({
   state: {
     filter: 'all',
     todos:[],
-    token:localStorage.getItem("access_token")|| null,
+    token:localStorage.getItem("Authorization")|| null,
   },
   getters: {
     loggedIn(state) {
@@ -82,12 +86,13 @@ export const store = new Vuex.Store({
     },
     retrieveToken(context, credentials) {
       return new Promise((resolve, reject) =>{
-        axios.post('/login',{
+        instanceAxios.post('/login',{
           account:credentials.account,
           password:credentials.password,
         }).then(response => {
           const token = response.data.data.token
-          localStorage.setItem("access_token",token)
+          localStorage.setItem("Authorization",token)
+          axios.defaults.headers.common['Authorization'] = token
           context.commit('retrieveToken',token)
           resolve(token)
         }).catch(error => {
@@ -96,15 +101,29 @@ export const store = new Vuex.Store({
         })
       })
     },
+    destroyToken(context) {
+      if (context.getters.loggedIn){
+        return new Promise((resolve, reject) => {
+          instanceAxios.post('/logout').then(() => {
+            localStorage.removeItem("Authorization")
+            context.commit('destroyToken')
+            resolve()
+          }).catch(error => {
+            console.log(error)
+            reject(error)
+          })
+        })
+      }
+    },
     retrieveTodos(context) {
-      axios.get('/todo/list').then(response => {
+      instanceAxios.get('/todo/list').then(response => {
         context.commit('retrieveTodos',response.data.data.list)
       }).catch(error => {
         console.log(error)
       })
     },
     addTodo(context, todo){
-      axios.post('/todo/add',{
+      instanceAxios.post('/todo/add',{
         title:todo.title
       }).then(response => {
         context.commit('addTodo',response.data.data.todo)
@@ -113,14 +132,14 @@ export const store = new Vuex.Store({
       })
     },
     deleteTodo(context, id) {
-      axios.post('/todo/delete/' + id).then(() => {
+      instanceAxios.post('/todo/delete/' + id).then(() => {
         context.commit('deleteTodo',id)
       }).catch(error => {
         console.log(error)
       })
     },
     updateTodo(context, todo){
-      axios.post('/todo/item',{
+      instanceAxios.post('/todo/item',{
         id:todo.id,
         title:todo.title,
         completed:todo.completed
@@ -134,7 +153,7 @@ export const store = new Vuex.Store({
       context.commit('updateFilter',filter)
     },
     checkAll(context,checked) {
-      axios.post('/todo/check',{
+      instanceAxios.post('/todo/check',{
         title:"title",
         completed:checked,
       }).then(() => {
@@ -144,7 +163,7 @@ export const store = new Vuex.Store({
       })
     },
     clearCompleted(context) {
-      axios.post("/todo/destroy").then(() => {
+      instanceAxios.post("/todo/destroy").then(() => {
         context.commit('clearCompleted')
       }).catch(error => {
         console.log(error)

@@ -24,14 +24,14 @@ type Login struct {
 	LoginIp    string `bson:"login_ip"`    // 登录IP
 	Status     state  `bson:"status"`      //status 1 已登录，2表示退出登录
 	Forbidden  bool   `bson:"forbidden"`   //false 表示未禁言
-	userAgent  string `bson:"user_agent"`  //用户UA
+	UserAgent  string `bson:"user_agent"`  //用户UA
 	UpdatedAt  int64  `json:"updated_at,omitempty" bson:"updated_at"`
 }
 
 func UserLogin(userId, userAgent, token, ip string) (l *Login, err error) {
 	l = new(Login)
 	l.UserId = userId
-	l.userAgent = userAgent
+	l.UserAgent = userAgent
 	l.Token = token
 	l.CreateTime = time.Now().Unix()
 	l.UpdatedAt = l.CreateTime
