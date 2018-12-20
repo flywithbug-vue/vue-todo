@@ -36,7 +36,7 @@ func Logger(notlogged ...string) gin.HandlerFunc {
 		//	)
 		//}
 		headers, _ := json.Marshal(c.Request.Header)
-		log.Info("[GIN] [%s] [Started]\tRequestHeader::%s\n", xReqid, headers)
+		log.Infoo("[GIN] [%s] [Started]\tRequestHeader::%s\n", xReqid, headers)
 		// Process request
 		c.Next()
 		// Log only when path is not being skipped
