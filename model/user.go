@@ -17,7 +17,7 @@ type User struct {
 	UserId   string `json:"user_id" bson:"user_id"`
 	Account  string `json:"account"`
 	Password string
-	Mail     string `json:"mail"`
+	Email    string `json:"email""`
 	Phone    string `json:"phone"`
 	Sex      int    `json:"sex"` // 0保密，1男 2女
 	RealName string `json:"real_name" bson:"real_name"`
@@ -34,7 +34,7 @@ func (u *User) Insert() error {
 	if mongo.IsExist(db, userCollection, bson.M{"account": u.Account}) {
 		return errors.New("account 已存在")
 	}
-	if mongo.IsExist(db, userCollection, bson.M{"mail": u.Mail}) {
+	if mongo.IsExist(db, userCollection, bson.M{"mail": u.Email}) {
 		return errors.New("mail 已存在")
 	}
 	if u.UserId == "" {
@@ -69,7 +69,7 @@ func AddAdminUser() error {
 	u := new(User)
 	u.Account = "admin"
 	u.Password = "flywithbug123"
-	u.Mail = "flywithbug@gmail.com"
+	u.Email = "flywithbug@gmail.com"
 	u.Title = "admin"
 	u.Phone = "phone"
 	u.RealName = "Jack"

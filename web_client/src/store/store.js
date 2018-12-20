@@ -92,7 +92,6 @@ export const store =new Vuex.Store({
         }).then(response => {
           const token = response.data.data.token
           localStorage.setItem("Authorization",token)
-          axios.defaults.headers.common['Authorization'] = token
           context.commit('retrieveToken',token)
           resolve(token)
         }).catch(error => {
@@ -167,6 +166,19 @@ export const store =new Vuex.Store({
         context.commit('clearCompleted')
       }).catch(error => {
         console.log(error)
+      })
+    },
+    register(context, data) {
+      return new Promise((resolve, reject) => {
+        instanceAxios.post('/register', {
+          account: data.account,
+          email:data.email,
+          password: data.password,
+        }).then(response => {
+            resolve(response.data.user)
+          }).catch(error => {
+            reject(error)
+          })
       })
     },
   }

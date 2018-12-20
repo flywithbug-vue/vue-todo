@@ -63,10 +63,10 @@ func RegisterHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "Password can not be nil")
 		return
 	}
-	//if user.Mail == "" {
-	//	aRes.SetErrorInfo(http.StatusBadRequest, "Mail can not be nil")
-	//	return
-	//}
+	if user.Email == "" {
+		aRes.SetErrorInfo(http.StatusBadRequest, "email can not be nil")
+		return
+	}
 	err = user.Insert()
 	if err != nil {
 		aRes.SetErrorInfo(http.StatusBadRequest, err.Error())
