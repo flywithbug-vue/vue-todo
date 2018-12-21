@@ -9,6 +9,16 @@ let instanceAxios = axios.create({
   headers:{'Authorization':localStorage.getItem("Authorization")}
 })
 
+instanceAxios.interceptors.request.use(config => {
+  if (store.getters.loggedIn) {
+    config.headers['Authorization'] = localStorage.getItem("Authorization")
+  }
+  return config
+},error => {
+  console.log(error) // for debug
+  Promise.reject(error)
+})
+
 export const store =new Vuex.Store({
   state: {
     filter: 'all',
