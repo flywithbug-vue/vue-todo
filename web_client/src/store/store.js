@@ -6,12 +6,13 @@ Vue.use(Vuex)
 let instanceAxios = axios.create({
   baseURL: 'http://localhost:6201/api',
   timeout: 1000,
-  headers:{'Authorization':localStorage.getItem("Authorization")}
 })
 
 instanceAxios.interceptors.request.use(config => {
   if (store.getters.loggedIn) {
     config.headers['Authorization'] = localStorage.getItem("Authorization")
+  }else{
+    config.headers['Authorization'] = ''
   }
   return config
 },error => {
