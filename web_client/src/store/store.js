@@ -4,7 +4,7 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 let instanceAxios = axios.create({
-  baseURL: 'http://localhost:6201/api',
+  baseURL: 'http://localhost:8090/api',
   timeout: 1000,
 })
 
