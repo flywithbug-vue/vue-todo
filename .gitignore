@@ -30,6 +30,5 @@ yarn-error.log*
 /vendor/*
 !/vendor/vendor.json
 log/*
-config.json
 privatesources/private_key
 privatesources/public_key.pub
