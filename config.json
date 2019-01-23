@@ -1,6 +1,5 @@
 {
   "api_port":":8090",
-  "web_port":":8091",
   "static_path":"./web_client/dist/",
   "private_key_path":"./privatesources/private_key",
   "public_key_path":"./privatesources/public_key.pub",

@@ -11,6 +11,6 @@ vue: client
 go run main.go
 
 # serve with hot reload at localhost:6201
-open  http://localhost:6203 
+open  http://localhost:8090 
 
 ```
