@@ -1,0 +1,14 @@
+{
+  "LogLevel" : "info",
+  "Layout": "2006/01/02-15:04:05.999",
+  "FileWriter" : {
+    "LogPath" : "./log/log-%Y%M%D.log",
+    "On": true
+
+  },
+
+  "ConsoleWriter" : {
+    "On" : true,
+    "Color": true
+  }
+}

@@ -27,8 +27,4 @@ yarn-error.log*
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
-/vendor/*
-!/vendor/vendor.json
 log/*
-privatesources/private_key
-privatesources/public_key.pub
